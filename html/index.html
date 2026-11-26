@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教學圖卡風格選樣總覽 (Styles Showcase)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      max-width: 700px;
+      margin-bottom: 36px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      width: 100%;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card-1 .tag { background: #1e3a8a; color: #93c5fd; }
+    .card-2 .tag { background: #064e3b; color: #6ee7b7; }
+    .card-3 .tag { background: #881337; color: #fda4af; }
+
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+    .desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .features {
+      list-style: none;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+    .features li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .features li::before {
+      content: "✔";
+      color: #38bdf8;
+      font-weight: bold;
+    }
+    .btn {
+      display: block;
+      text-align: center;
+      background: #0284c7;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #0369a1; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>單頁 A4 教學圖卡網頁風格提案</h1>
+    <p>嚴格維持 A4 直式比例，捨棄花俏插圖，改以純粹排版、CSS/JS 解說圖表與 KaTeX 數學式為核心。請點擊預覽各風格：</p>
+  </div>
+
+  <div class="grid">
+    <!-- Style 1 -->
+    <div class="card card-1">
+      <div>
+        <span class="tag">風格一：經典學術講義風</span>
+        <h2>Academic Minimalist</h2>
+        <p class="desc">沈穩深藍與經典襯線字體，呈現嚴謹的研討會/大學講義手冊質感。適合純文字與公式為主的知識傳遞。</p>
+        <ul class="features">
+          <li>沈穩深藍 (Navy) + 暖灰紙感背景</li>
+          <li>CSS Grid 繪製「謝林模型微觀到宏觀隔離點陣」</li>
+          <li>標準兩欄與三欄結構化排版</li>
+        </ul>
+      </div>
+      <a class="btn" href="style1_academic.html" target="_blank">預覽風格一 (Academic) ➔</a>
+    </div>
+
+    <!-- Style 2 -->
+    <div class="card card-2">
+      <div>
+        <span class="tag">風格二：現代科技儀表板風</span>
+        <h2>Tech Engineering Blueprint</h2>
+        <p class="desc">深色科技頂部橫幅 + 模組化科技卡片系統，內建即時動態微觀 ABM 粒子聚集模擬 Canvas，科技工程感極強。</p>
+        <ul class="features">
+          <li>深石板藍灰 + 翡翠綠 (Emerald) 高亮強調</li>
+          <li><strong>即時動態 JS Canvas</strong>：動態模擬 40 個體空間聚集</li>
+          <li>等寬代碼字型標籤 (JetBrains Mono)</li>
+        </ul>
+      </div>
+      <a class="btn" href="style2_tech_blueprint.html" target="_blank">預覽風格二 (Tech) ➔</a>
+    </div>
+
+    <!-- Style 3 -->
+    <div class="card card-3">
+      <div>
+        <span class="tag">風格三：瑞士結構化幾何風</span>
+        <h2>Swiss International Grid</h2>
+        <p class="desc">高對比幾何排版、純黑白底佐以大膽瑞士紅。視覺結構感最強、閱讀階層極其鮮明，極具設計張力。</p>
+        <ul class="features">
+          <li>高對比極簡黑紅 (Swiss Red & Jet Black)</li>
+          <li>SVG 幾何閉環三角關係圖 (Agents - Env - Rules)</li>
+          <li>醒目大數字標題 (01, 02, 03) 與高反差對比表格</li>
+        </ul>
+      </div>
+      <a class="btn" href="style3_swiss_grid.html" target="_blank">預覽風格三 (Swiss Grid) ➔</a>
+    </div>
+  </div>
+</body>
+</html>

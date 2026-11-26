@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>風格三：瑞士結構化幾何風 - Agent-Based Model</title>
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --swiss-red: #e11d48;
+      --swiss-black: #09090b;
+      --swiss-gray-dark: #27272a;
+      --swiss-gray-light: #f4f4f5;
+      --swiss-gray-border: #e4e4e7;
+      --swiss-white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #d4d4d8;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      color: var(--swiss-black);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      line-height: 1.4;
+    }
+
+    /* Standard A4 Container */
+    .a4-page {
+      width: 794px;
+      min-height: 1123px;
+      background: var(--swiss-white);
+      padding: 40px 44px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      border-top: 8px solid var(--swiss-red);
+    }
+
+    /* Hero Header */
+    header {
+      margin-bottom: 20px;
+      border-bottom: 3px solid var(--swiss-black);
+      padding-bottom: 14px;
+    }
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--swiss-red);
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      color: var(--swiss-black);
+      margin-bottom: 8px;
+    }
+    .headline-bar {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .core-desc {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--swiss-gray-dark);
+      line-height: 1.45;
+    }
+    .swiss-stat-badge {
+      background: var(--swiss-black);
+      color: var(--swiss-white);
+      padding: 8px 12px;
+      font-size: 11px;
+      text-align: center;
+      border-radius: 2px;
+    }
+    .swiss-stat-badge strong {
+      display: block;
+      color: var(--swiss-red);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Geometric Section Dividers */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--swiss-black);
+      padding-bottom: 4px;
+    }
+    .sec-num {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--swiss-red);
+      font-variant-numeric: tabular-nums;
+    }
+    .sec-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--swiss-black);
+    }
+
+    /* Section 1: Triad & Geometric SVG Diagram */
+    .triad-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: stretch;
+    }
+    .triad-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .triad-item {
+      background: var(--swiss-gray-light);
+      padding: 8px 12px;
+      border-left: 4px solid var(--swiss-black);
+      font-size: 12px;
+    }
+    .triad-item:nth-child(2) { border-left-color: var(--swiss-red); }
+    .triad-item strong {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--swiss-black);
+      margin-bottom: 2px;
+    }
+
+    /* Geometric SVG Triad Diagram */
+    .svg-diagram-card {
+      background: #fafafa;
+      border: 1px solid var(--swiss-gray-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border-radius: 2px;
+    }
+    .diagram-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--swiss-gray-dark);
+      text-transform: uppercase;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Section 2: Mathematical Formulation (Black & Red Block) */
+    .math-section {
+      margin-bottom: 16px;
+    }
+    .math-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .math-box {
+      border: 2px solid var(--swiss-black);
+      padding: 10px 14px;
+      background: #ffffff;
+    }
+    .math-box.accent-box {
+      background: var(--swiss-black);
+      color: #ffffff;
+      border-color: var(--swiss-black);
+    }
+    .math-box.accent-box .math-sub { color: #a1a1aa; }
+    .math-box-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .math-box .katex-display { margin: 6px 0; }
+    .math-sub {
+      font-size: 10.5px;
+      color: #52525b;
+      margin-top: 4px;
+    }
+
+    /* Section 3: High-Contrast Matrix Table */
+    .table-section {
+      margin-bottom: 16px;
+    }
+    .swiss-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+    }
+    .swiss-table th {
+      background: var(--swiss-black);
+      color: var(--swiss-white);
+      padding: 6px 10px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .swiss-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--swiss-gray-border);
+      background: #ffffff;
+    }
+    .swiss-table tr:nth-child(even) td { background: var(--swiss-gray-light); }
+    .swiss-table td:first-child { font-weight: 800; color: var(--swiss-red); width: 18%; }
+
+    /* Section 4: Milestones 3-Box Flow */
+    .milestones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .milestone-card {
+      border: 1px solid var(--swiss-black);
+      padding: 10px;
+      position: relative;
+    }
+    .milestone-card .badge-num {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--swiss-red);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 2px 6px;
+    }
+    .milestone-card h5 {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: var(--swiss-black);
+    }
+    .milestone-card p {
+      font-size: 11px;
+      color: var(--swiss-gray-dark);
+      line-height: 1.35;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 2px solid var(--swiss-black);
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--swiss-gray-dark);
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .a4-page { box-shadow: none; border-top: none; width: 100%; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="a4-page">
+    <!-- Header -->
+    <header>
+      <div class="top-meta">
+        <span>Complex Systems Institute</span>
+        <span>A4 Information Sheet / 01</span>
+      </div>
+      <h1>AGENT-BASED MODEL (ABM)</h1>
+      <div class="headline-bar">
+        <div class="core-desc">
+          <strong>非線性複雜系統的核心建模範式：</strong> 放棄對總體變數的直接方程擬合，透過定義大量自主個體 (Agents) 在離散環境中的局部互動行為，自下而上湧現宏觀層面的群體結構。
+        </div>
+        <div class="swiss-stat-badge">
+          PARADIGM
+          <strong>BOTTOM-UP</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Body -->
+    <main>
+      <!-- Sec 01: Triad & Geometric SVG Diagram -->
+      <div class="section-header">
+        <span class="sec-num">01</span>
+        <span class="sec-title">系統架構三大支柱 (Triad Architecture)</span>
+      </div>
+      <div class="triad-wrapper">
+        <div class="triad-list">
+          <div class="triad-item">
+            <strong>01 / 代理人主體 (AGENTS)</strong>
+            具備自主性、個體異質性、記憶狀態與有限理性，按局部資訊決策。
+          </div>
+          <div class="triad-item">
+            <strong>02 / 拓撲環境 (ENVIRONMENT)</strong>
+            承載主體的幾何與社交空間（2D 格網、無尺度網絡圖、連續場域）。
+          </div>
+          <div class="triad-item">
+            <strong>03 / 動態規則 (INTERACTION RULES)</strong>
+            局部鄰域感知、狀態轉移邏輯與自適應演化算子。
+          </div>
+        </div>
+
+        <!-- SVG Geometric Triangular Diagram -->
+        <div class="svg-diagram-card">
+          <svg width="180" height="110" viewBox="0 0 180 110">
+            <!-- Triangular loop -->
+            <polygon points="90,15 155,95 25,95" fill="none" stroke="#09090b" stroke-width="2" stroke-dasharray="3,3" />
+            <!-- Node: Environment -->
+            <circle cx="90" cy="15" r="14" fill="#09090b" />
+            <text x="90" y="19" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">ENV</text>
+            <!-- Node: Agents -->
+            <circle cx="25" cy="95" r="14" fill="#e11d48" />
+            <text x="25" y="99" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">AGT</text>
+            <!-- Node: Rules -->
+            <circle cx="155" cy="95" r="14" fill="#27272a" />
+            <text x="155" y="99" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">RUL</text>
+            <!-- Center Label: Emergence -->
+            <rect x="65" y="55" width="50" height="18" fill="#f4f4f5" stroke="#09090b" stroke-width="1"/>
+            <text x="90" y="67" font-size="8.5" font-weight="800" fill="#e11d48" text-anchor="middle">湧現現象</text>
+          </svg>
+          <div class="diagram-label">三大支柱閉環反饋關係</div>
+        </div>
+      </div>
+
+      <!-- Sec 02: Mathematical Formalization -->
+      <div class="section-header">
+        <span class="sec-num">02</span>
+        <span class="sec-title">微觀轉移與宏觀湧現數學模型</span>
+      </div>
+      <div class="math-section">
+        <div class="math-grid">
+          <div class="math-box">
+            <div class="math-box-title">
+              <span>微觀狀態演化 (Micro)</span>
+              <span style="color:var(--swiss-red);">LOCAL</span>
+            </div>
+            $$s_i(t+1) = f\Big(s_i(t), \; \mathcal{N}_i(t), \; E(t)\Big)$$
+            <div class="math-sub">個體狀態取決於自身記憶、鄰居集合 $\mathcal{N}_i$ 及環境刺激 $E$。</div>
+          </div>
+          <div class="math-box accent-box">
+            <div class="math-box-title">
+              <span>宏觀全域湧現 (Macro)</span>
+              <span style="color:#ef4444;">GLOBAL</span>
+            </div>
+            $$M(t) = \mathcal{G}\Big(\{s_i(t)\}_{i=1}^N\Big) \approx \frac{1}{N}\sum_{i=1}^N g(s_i(t))$$
+            <div class="math-sub">系統全域指標 $M(t)$ 由微觀非線性聚合，不可微觀線性簡化。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sec 03: High-Contrast Benchmark Table -->
+      <div class="section-header">
+        <span class="sec-num">03</span>
+        <span class="sec-title">典範轉移對比：TOP-DOWN vs BOTTOM-UP</span>
+      </div>
+      <div class="table-section">
+        <table class="swiss-table">
+          <thead>
+            <tr>
+              <th>比較面向</th>
+              <th>傳統頂層模型 (ODE / PDE 微分方程)</th>
+              <th>代理人基礎模型 (ABM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>視角</td>
+              <td>由上而下：針對宏觀聚集變數直接給定演化方程</td>
+              <td>由下而上：從微觀個體互動中自然生成全域現象</td>
+            </tr>
+            <tr>
+              <td>個體性</td>
+              <td>均質假設 (Homogeneous)：假設平均場或代表性主體</td>
+              <td>異質特徵 (Heterogeneous)：個體擁有多樣化屬性與偏好</td>
+            </tr>
+            <tr>
+              <td>拓撲結構</td>
+              <td>完全混合空間 (Well-mixed)：忽略空間與網絡非均勻性</td>
+              <td>局部拓撲 (Network/Grid)：精確刻畫空間聚集與社交網絡</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sec 04: Classic Milestones -->
+      <div class="section-header">
+        <span class="sec-num">04</span>
+        <span class="sec-title">經典里程碑模型 (BENCHMARK CASES)</span>
+      </div>
+      <div class="milestones-grid">
+        <div class="milestone-card">
+          <div class="badge-num">CASE 01</div>
+          <h5>謝林隔離模型</h5>
+          <p>個體僅尋求最低同質鄰居門檻（如 30%），宏觀即自發演化為高度極端隔離，印證意圖與結果之斷裂。</p>
+        </div>
+        <div class="milestone-card">
+          <div class="badge-num">CASE 02</div>
+          <h5>Boids 鳥群模擬</h5>
+          <p>僅依循避碰、對齊、凝聚三項幾何向量規則，無中央指揮即可自組織產生逼真鳥群協同飛行軌跡。</p>
+        </div>
+        <div class="milestone-card">
+          <div class="badge-num">CASE 03</div>
+          <h5>複雜網絡流行病 (SIR)</h5>
+          <p>在無尺度或小世界網絡上模擬接觸傳播，精確反映超級傳播節點與異質拓撲對疫情擴散臨界點的影響。</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <span>DESIGN SYSTEM: SWISS INTERNATIONAL GRID</span>
+      <span>FORMAT: ISO-216 A4 VERTICAL</span>
+      <span>DOC: ABM-01-HANDOUT</span>
+    </footer>
+  </div>
+
+</body>
+</html>

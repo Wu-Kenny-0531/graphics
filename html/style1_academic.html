@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>風格一：經典學術講義風 - Agent-Based Model</title>
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #0f172a;
+      --accent: #991b1b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --border-light: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: #e2e8f0;
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      line-height: 1.5;
+    }
+
+    /* Standard A4 Container */
+    .a4-page {
+      width: 794px;
+      min-height: 1123px;
+      background: var(--card-bg);
+      padding: 40px 48px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .meta-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    h1 .subtitle {
+      font-size: 14px;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .definition-quote {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text);
+      background: #f1f5f9;
+      border-left: 3px solid var(--accent);
+      padding: 8px 14px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Content Layout */
+    .section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 13px;
+      background: var(--accent);
+    }
+
+    /* Grid layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* Triad Cards */
+    .triad-box {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      background: #fafafa;
+    }
+    .triad-item {
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .triad-item:last-child { margin-bottom: 0; }
+    .triad-item strong { color: var(--primary); }
+
+    /* Math Box */
+    .math-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+    .math-card .katex-display { margin: 6px 0; }
+    .math-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* CSS Diagram: Schelling Micro-to-Macro grid */
+    .diagram-container {
+      background: #fdfdfd;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 12px;
+    }
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(6, 12px);
+      gap: 2px;
+      background: #e2e8f0;
+      padding: 3px;
+      border-radius: 2px;
+    }
+    .cell {
+      width: 12px;
+      height: 12px;
+      border-radius: 1px;
+    }
+    .cell.blue { background: #2563eb; }
+    .cell.red { background: #dc2626; }
+    .cell.empty { background: #ffffff; }
+    .diagram-caption {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* Table comparison */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    .compare-table th, .compare-table td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #f1f5f9;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .compare-table tr:nth-child(even) { background: #fafafa; }
+
+    /* Classic milestones */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .case-card {
+      border: 1px solid var(--border-light);
+      border-top: 2px solid var(--primary);
+      padding: 8px 10px;
+      background: #ffffff;
+      font-size: 11px;
+    }
+    .case-card h4 {
+      font-size: 12px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .a4-page { box-shadow: none; width: 100%; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="a4-page">
+    <!-- Header -->
+    <header>
+      <div class="meta-bar">
+        <span>Course: Complex Systems & Simulation</span>
+        <span>A4 Single-Page Handout #01</span>
+      </div>
+      <h1>
+        Agent-Based Model (ABM)
+        <span class="subtitle">代理人基礎模型 / 微觀決策與宏觀湧現</span>
+      </h1>
+      <div class="definition-quote">
+        <strong>核心概念：</strong> 由下而上 (Bottom-up) 的計算架構。模擬具自主性的個體 (Agents) 依循微觀局部規則互動，進而自發湧現 (Emerge) 宏觀複雜現象。
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Row 1: Core Triad & Emergence Math -->
+      <div class="two-col">
+        <div>
+          <div class="section-title">三大核心支柱 (The Core Triad)</div>
+          <div class="triad-box">
+            <div class="triad-item">
+              <strong>1. 主體 (Agents)：</strong>
+              具備自主性 (Autonomous)、異質性 (Heterogeneous) 與有限理性。擁有獨立狀態與適應能力。
+            </div>
+            <div class="triad-item">
+              <strong>2. 環境 (Environment)：</strong>
+              主體運行的拓撲空間（拓撲格網 Grid、社交網絡 Network、連續 2D/3D 空間）。
+            </div>
+            <div class="triad-item">
+              <strong>3. 互動與規則 (Rules)：</strong>
+              局部感知 (Local Sensing)、條件決策與反饋機制，推動系統動態演進。
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-title">微觀至宏觀之數學表達</div>
+          <div class="math-card">
+            <div>微觀狀態轉移（個體 $i$ 於時間 $t+1$）：</div>
+            $$s_i(t+1) = f\Big(s_i(t), \; \mathcal{N}_i(t), \; E(t)\Big)$$
+            <div>宏觀全域觀測量（系統湧現指標）：</div>
+            $$M(t) = \mathcal{G}\Big(\{s_1(t), \dots, s_N(t)\}\Big) \approx \frac{1}{N}\sum_{i=1}^N g(s_i(t))$$
+            <div class="math-note">註：$\mathcal{N}_i(t)$ 表鄰域主體集，$E(t)$ 為全域環境變數。宏觀量非微觀線性和。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS/JS Diagram: Schelling Micro-to-Macro visual -->
+      <div style="margin-bottom: 16px;">
+        <div class="section-title">機制示範：微觀偏好引發宏觀隔離（謝林模型點陣示意）</div>
+        <div class="diagram-container">
+          <div style="text-align: center;">
+            <div style="font-size: 10px; font-weight: bold; margin-bottom: 3px; color: var(--text-muted);">初始狀態 (隨機混合)</div>
+            <div class="grid-demo" id="gridInitial">
+              <!-- JS auto generates random dots -->
+            </div>
+          </div>
+          <div style="font-size: 20px; color: var(--accent); font-weight: bold;">➔</div>
+          <div style="text-align: center;">
+            <div style="font-size: 10px; font-weight: bold; margin-bottom: 3px; color: var(--text-muted);">湧現狀態 (聚類隔離)</div>
+            <div class="grid-demo" id="gridClustered">
+              <!-- JS generates clustered dots -->
+            </div>
+          </div>
+          <div class="diagram-caption">
+            <strong>【湧現特徵】</strong> 個體僅需微小同質偏好（例如希望鄰居 $\ge 30\%$ 為同族），系統在歷經局部遷移後，宏觀層面即自發分化為高度隔離的色塊聚落。證實：<strong>個體局部微觀意圖 $\neq$ 全局宏觀結果</strong>。
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="section-title">典範轉移：傳統方程式模型 (Top-Down) vs ABM (Bottom-Up)</div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>維度</th>
+            <th>傳統頂層模型 (微分方程 ODE/PDE)</th>
+            <th>代理人基礎模型 (ABM)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>建模視角</strong></td>
+            <td>由上而下，直接關注總體聚合數據演變</td>
+            <td>由下而上，關注個體行為與微觀互動拓撲</td>
+          </tr>
+          <tr>
+            <td><strong>個體假設</strong></td>
+            <td>均質化 (Homogeneous)、代表性個體 (Representative)</td>
+            <td>高度異質性 (Heterogeneous)，屬性與偏好各異</td>
+          </tr>
+          <tr>
+            <td><strong>系統動力學</strong></td>
+            <td>多假設完全混合 (Well-mixed)、連續平滑</td>
+            <td>非線性互動、突變門檻 (Tipping Points)、路徑依賴</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Classic Milestones -->
+      <div class="section-title">三大里程碑模型 (Classic Milestones)</div>
+      <div class="cases-grid">
+        <div class="case-card">
+          <h4>1. Schelling 隔離模型</h4>
+          <p>微觀個體尋求低滿意門檻，宏觀演化出極端居住隔離現象。</p>
+        </div>
+        <div class="case-card">
+          <h4>2. Boids 群飛模擬</h4>
+          <p>僅依循避碰、對齊、凝聚三規則，湧現逼真鳥群協同飛行。</p>
+        </div>
+        <div class="case-card">
+          <h4>3. SIR 網絡傳播</h4>
+          <p>超越均質擴散方程，捕捉接觸網絡中的超級傳播與拓撲阻斷。</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <span>教材版本：v1.0 (Academic Style)</span>
+      <span>A4 單頁知識圖卡教學系列</span>
+    </footer>
+  </div>
+
+  <script>
+    // Generate simple Schelling dots for diagram
+    const g1 = document.getElementById('gridInitial');
+    const g2 = document.getElementById('gridClustered');
+    const randomClasses = ['blue', 'red', 'blue', 'empty', 'red', 'blue', 'red', 'empty', 'blue', 'red', 'red', 'blue', 'empty', 'red', 'blue', 'blue', 'red', 'empty', 'blue', 'red', 'blue', 'red', 'empty', 'blue', 'red', 'blue', 'red', 'empty', 'blue', 'red', 'red', 'blue', 'empty', 'red', 'blue', 'red'];
+    const clusteredClasses = ['blue', 'blue', 'blue', 'empty', 'red', 'red', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue', 'empty', 'red', 'red', 'red', 'empty', 'blue', 'blue', 'red', 'red', 'empty', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue', 'empty', 'red', 'red', 'red'];
+    
+    randomClasses.forEach(c => {
+      const d = document.createElement('div');
+      d.className = 'cell ' + c;
+      g1.appendChild(d);
+    });
+    clusteredClasses.forEach(c => {
+      const d = document.createElement('div');
+      d.className = 'cell ' + c;
+      g2.appendChild(d);
+    });
+  </script>
+</body>
+</html>
