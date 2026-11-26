@@ -113,6 +113,18 @@ def main():
     print(f"來源 HTML: {input_file.name}")
     print(f"目標 PNG : {output_file.name}")
 
+    # 執行風格合規檢查
+    try:
+        from lint_style import lint_file, print_report
+        passed, errors, warnings = lint_file(input_file)
+        print_report(input_file, passed, errors, warnings)
+        if not passed:
+            print("\n🚨 【風格攔截】圖卡風格未達標，請依上方提示修正後再輸出！")
+            sys.exit(1)
+        print("✨ 風格檢查通過，進入無頭瀏覽器高解析度渲染流程...\n")
+    except ImportError:
+        pass
+
     # 優先嘗試 Playwright
     try:
         import playwright
