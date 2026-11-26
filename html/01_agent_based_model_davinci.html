@@ -403,6 +403,68 @@
       line-height: 1.35;
     }
 
+    /* Manuscript Marginalia & Hand-Drawn Annotations */
+    .marginalia-note {
+      position: absolute;
+      font-family: var(--font-handwriting);
+      font-size: 13.5px;
+      color: var(--seal-red);
+      line-height: 1.2;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Authentic Ink Strike-through (草記刪劃修改痕跡) */
+    .manuscript-scratch {
+      position: relative;
+      display: inline-block;
+      color: var(--ink-muted);
+      opacity: 0.75;
+    }
+    .manuscript-scratch::after {
+      content: "";
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      top: 52%;
+      height: 2px;
+      background: var(--seal-red);
+      transform: rotate(-2deg);
+      border-radius: 2px;
+      opacity: 0.85;
+    }
+    .manuscript-scratch-fix {
+      color: var(--seal-red);
+      font-weight: 700;
+      margin-left: 4px;
+      position: relative;
+      top: -3px;
+      font-size: 0.95em;
+    }
+
+    /* Hand-Drawn Compass Calibration Scale (幾何量測弧尺) */
+    .compass-scale {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-handwriting);
+      font-size: 12.5px;
+      color: var(--antique-gold);
+    }
+    .compass-scale-ticks {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 10px;
+      border-bottom: 1px solid var(--antique-gold);
+      padding-right: 2px;
+    }
+    .compass-scale-ticks span {
+      display: inline-block;
+      width: 1px;
+      background: var(--antique-gold);
+    }
+
     /* Footer & Stamp */
     footer {
       border-top: 1px solid var(--border-ink);
@@ -443,8 +505,21 @@
     <header class="header-top">
       <div>
         <div class="meta-text">Tractatus Computatorius · 達文西手繪手稿考卷</div>
-        <div style="font-size: 14.5px; color: var(--ink-muted);">
-          微觀行為之微小偏好 · 宏觀秩序之必然湧現
+        <div style="font-size: 14.5px; color: var(--ink-muted); display:flex; align-items:center; gap:12px;">
+          <span>微觀行為之微小偏好 · 宏觀秩序之必然湧現</span>
+          <div class="compass-scale">
+            <span>[Scala Geometria]</span>
+            <div class="compass-scale-ticks">
+              <span style="height:4px;"></span>
+              <span style="height:7px;"></span>
+              <span style="height:4px;"></span>
+              <span style="height:10px;"></span>
+              <span style="height:4px;"></span>
+              <span style="height:7px;"></span>
+              <span style="height:4px;"></span>
+            </div>
+            <span>$\Delta t \to 0$</span>
+          </div>
         </div>
       </div>
       <div class="wax-seal">
@@ -528,25 +603,36 @@
             <circle cx="65" cy="65" r="6" fill="#9e2a2b"/>
             <line x1="65" y1="65" x2="100" y2="50" stroke="#23180f" stroke-width="2"/>
             <polygon points="105,48 97,45 99,55" fill="#23180f"/>
-            <!-- Handwritten Labels in SVG -->
-            <text x="65" y="139" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#23180f" text-anchor="middle">主體解剖：感知半徑與指向</text>
-            <text x="110" y="28" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#9e2a2b">感知錐 N_i</text>
-            <text x="25" y="48" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#1b3b6f">內部狀態 s_i</text>
+            <!-- Handwritten Labels in SVG with Da Vinci Callouts -->
+            <text x="65" y="139" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#23180f" text-anchor="middle">主體解剖：感知半徑與指向</text>
+            <path d="M 108 26 L 85 45" fill="none" stroke="#9e2a2b" stroke-width="0.9" stroke-dasharray="2,2"/>
+            <text x="110" y="24" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#9e2a2b">感知錐 N_i (局域)</text>
+            <path d="M 28 50 L 52 62" fill="none" stroke="#1b3b6f" stroke-width="0.9" stroke-dasharray="2,2"/>
+            <text x="25" y="46" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#1b3b6f">內部狀態 s_i</text>
           </g>
 
-          <!-- Middle: Evolution Arrow & Compass Rose -->
+          <!-- Middle: Evolution Arrow & Compass Rose with Angular Scale -->
           <g transform="translate(160, 20)">
             <line x1="20" y1="55" x2="150" y2="55" stroke="#3b2a1d" stroke-width="1.5"/>
             <polygon points="155,55 145,50 145,60" fill="#3b2a1d"/>
             <circle cx="85" cy="55" r="24" fill="none" stroke="#a67c1e" stroke-width="0.8" stroke-dasharray="2,2"/>
+            <!-- Compass angle ticks -->
+            <line x1="85" y1="31" x2="85" y2="35" stroke="#a67c1e" stroke-width="1"/>
+            <line x1="85" y1="75" x2="85" y2="79" stroke="#a67c1e" stroke-width="1"/>
+            <line x1="61" y1="55" x2="65" y2="55" stroke="#a67c1e" stroke-width="1"/>
+            <line x1="105" y1="55" x2="109" y2="55" stroke="#a67c1e" stroke-width="1"/>
             <text x="85" y="40" font-family="'Caveat', cursive" font-size="16" font-weight="700" fill="#9e2a2b" text-anchor="middle">Iteratio</text>
-            <text x="85" y="78" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#4a3828" text-anchor="middle">局部迭代：避碰、對齊、聚類</text>
+            <text x="85" y="78" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#4a3828" text-anchor="middle">局部迭代：避碰、對齊、聚類</text>
           </g>
 
-          <!-- Right: Macro Emergence Vortex -->
+          <!-- Right: Macro Emergence Vortex with Measurement Grid Overlay -->
           <g transform="translate(340, 8)">
             <rect x="0" y="0" width="345" height="138" fill="none" stroke="#3b2a1d" stroke-width="1.2"/>
             <rect x="3" y="3" width="339" height="132" fill="none" stroke="#a67c1e" stroke-width="0.6" stroke-dasharray="4,2"/>
+            
+            <!-- Measuring crosshair ticks -->
+            <line x1="172" y1="5" x2="172" y2="15" stroke="#a67c1e" stroke-width="0.8"/>
+            <line x1="172" y1="123" x2="172" y2="133" stroke="#a67c1e" stroke-width="0.8"/>
             
             <path d="M 20 110 Q 90 20 170 65 T 320 40" fill="none" stroke="#1b3b6f" stroke-width="1.4" stroke-dasharray="2,2"/>
             <path d="M 30 125 Q 110 35 180 80 T 330 55" fill="none" stroke="#9e2a2b" stroke-width="1" stroke-dasharray="3,3"/>
@@ -558,7 +644,7 @@
               <circle cx="5" cy="-6" r="3" fill="#9e2a2b"/>
               <circle cx="2" cy="7" r="3" fill="#9e2a2b"/>
               <circle cx="-7" cy="6" r="3" fill="#9e2a2b"/>
-              <text x="0" y="30" font-family="'Caveat', 'Long Cang', cursive" font-size="14.5" font-weight="700" fill="#9e2a2b" text-anchor="middle">同質聚落 (同化)</text>
+              <text x="0" y="30" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14" font-weight="700" fill="#9e2a2b" text-anchor="middle">同質聚落 (同化)</text>
             </g>
 
             <!-- Cluster Beta (Blue Swarm) -->
@@ -568,10 +654,10 @@
               <polygon points="12,-2 16,7 8,7" fill="#1b3b6f" transform="rotate(45 12 -2)"/>
               <polygon points="-10,8 -6,17 -14,17" fill="#1b3b6f" transform="rotate(45 -10 8)"/>
               <polygon points="5,14 9,23 1,23" fill="#1b3b6f" transform="rotate(45 5 14)"/>
-              <text x="0" y="40" font-family="'Caveat', 'Long Cang', cursive" font-size="14.5" font-weight="700" fill="#1b3b6f" text-anchor="middle">協同群飛 (秩序)</text>
+              <text x="0" y="40" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14" font-weight="700" fill="#1b3b6f" text-anchor="middle">協同群飛 (秩序)</text>
             </g>
 
-            <text x="172" y="126" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#23180f" text-anchor="middle">
+            <text x="172" y="126" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#23180f" text-anchor="middle">
               宏觀湧現：無中央指揮下，自發結成高度凝聚之群體秩序
             </text>
           </g>
@@ -599,12 +685,17 @@
           <tr>
             <td><strong>主體性 (Agents)</strong></td>
             <td><strong>均質假設</strong>：假設代表性個人，消除異質性。</td>
-            <td><strong>高度異質 (Heterogeneous)</strong>：個體性格、財富、偏好各異。</td>
+            <td>
+              <span class="manuscript-scratch">同質無差別</span><span class="manuscript-scratch-fix">➔ 高度異質</span> (Heterogeneous)：性格、財富、偏好各異。
+            </td>
           </tr>
           <tr>
             <td><strong>動態 (Dynamics)</strong></td>
             <td>線性連續平滑曲線，難以捕捉突變臨界點。</td>
-            <td><strong>非線性相變 (Tipping Points)</strong>，具路徑依賴與突變。</td>
+            <td>
+              <strong>非線性相變 (Tipping Points)</strong>，具路徑依賴與突變。
+              <span style="display:inline-block; font-size:13px; color:var(--seal-red); margin-left:4px;">[※ 具相轉移臨界特徵]</span>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -43,7 +43,11 @@
 4. **古典素描交叉排線 (Cross-Hatching)**：
    * 嚴格**禁止使用現代模糊半透明陰影** (`blur filter` 或 `box-shadow blur`)。
    * 陰影一律採用 **SVG 或 CSS 交叉排線**（$45^\circ$ 細斜線），模擬古籍銅版畫與鋼筆素描的陰影手感。
-5. **火漆印章標記 (Wax Seal Stamp)**：
+5. **手札排版與幾何輔助標註 (Manuscript Marginalia & Geometric Scales)**：
+   * **手寫引線與虛線指針 (Callout Pointers)**：圖解各細節採用古典細虛線引線連至手寫註記（如感知錐、內部狀態）。
+   * **真實草稿刪劃修正痕跡 (Ink Scratch-Through)**：在關鍵概念演化處（如均質 vs 異質），保留手札特有的紅色墨水一字刪劃與上方補正草寫（`manuscript-scratch`），營造思想醞釀時的草稿真實感。
+   * **幾何量測弧尺與羅盤刻度 (Compass Scales & Crosshairs)**：頁首與中心圖形周圍點綴古典工程幾何刻度線（`Scala Geometria`）與十字對齊刻線。
+6. **火漆印章標記 (Wax Seal Stamp)**：
    * 每張圖卡右上角必須包含一枚圓形朱砂紅火漆印章（如 `ABM FOLIO I`），旋轉 $-5^\circ$，帶有內陰影與細虛線圈。
 
 ---
