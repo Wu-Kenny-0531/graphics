@@ -7,6 +7,16 @@
 
 ## 🖼️ 圖卡典藏畫廊 (Folio Gallery)
 
+### 04. Generative Models: GAN & Diffusion (生成對抗網絡與擴散模型 · 16:9 專欄橫幅)
+> 📥 [下載高解析度 16:9 專欄橫幅 PNG (2560x1440)](png/04_generative_models_landscape.png) ｜ 🌐 [查看網頁版](html/04_generative_models_landscape.html) ｜ 📝 [閱讀主題筆記](notes/04_generative_models.md)
+
+<div align="center">
+  <img src="png/04_generative_models_landscape.png" alt="Generative Models: GAN & Diffusion 16:9 橫式專欄圖卡" width="95%" style="box-shadow: 0 10px 30px rgba(0,0,0,0.6); border-radius: 6px;" />
+  <p style="margin-top: 10px; font-size: 13px; color: #94a3b8;">🖋️ 16:9 橫向專欄排版：左翼博弈生成對抗，右翼熱力學擴散降噪。</p>
+</div>
+
+<br>
+
 ### 00. Codex Complexitatis (典藏集總封面 · Frontispiece)
 > 📥 [下載高解析度 A4 封面 PNG 原圖](png/00_cover.png) ｜ 🌐 [查看網頁版](html/00_cover_davinci.html) ｜ 📝 [閱讀封面概念筆記](notes/00_codex_cover.md)
 

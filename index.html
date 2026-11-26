@@ -199,7 +199,7 @@
       <div class="brand-logo">
         <span>📜 達文西手繪手札圖卡典藏</span>
       </div>
-      <span class="badge-total">共 3 張圖卡 + 封面</span>
+      <span class="badge-total">共 4 主題 (A4/方圖/橫幅) + 封面</span>
     </div>
 
     <!-- 切換按鈕群組 (Card Switcher) -->
@@ -224,6 +224,10 @@
         <span class="tab-tag" style="background:#059669;">1:1 Social</span>
         <span>03. 類神經 (社群方圖)</span>
       </button>
+      <button class="tab-btn" id="tab04" onclick="switchCard('04')">
+        <span class="tab-tag" style="background:#b45309;">16:9 Article</span>
+        <span>04. 生成對抗與擴散</span>
+      </button>
     </div>
 
     <div class="actions">
@@ -243,7 +247,7 @@
   <main class="viewer">
     <div class="card-meta-bar">
       <span id="cardMetaTitle">當前檢視：Frontispiece · Codex Complexitatis 總封面</span>
-      <span>A4 單頁比例 · 1588 × 2246 像素</span>
+      <span id="cardMetaRatio">A4 單頁比例 · 1588 × 2246 像素</span>
     </div>
     <iframe class="card-frame" id="cardFrame" src="html/00_cover_davinci.html"></iframe>
   </main>
@@ -253,29 +257,44 @@
       '00': {
         title: '當前檢視：Frontispiece · 達文西手繪手札典藏集 總封面 (Codex Complexitatis)',
         htmlUrl: 'html/00_cover_davinci.html',
-        pngUrl: 'png/00_cover.png'
+        pngUrl: 'png/00_cover.png',
+        aspect: 'a4',
+        metaRatio: 'A4 單頁比例 · 1588 × 2246 像素'
       },
       '01': {
         title: '當前檢視：Folio I · 01. Agent-Based Model (ABM)',
         htmlUrl: 'html/01_agent_based_model_davinci.html',
-        pngUrl: 'png/01_agent_based_model.png'
+        pngUrl: 'png/01_agent_based_model.png',
+        aspect: 'a4',
+        metaRatio: 'A4 單頁比例 · 1588 × 2246 像素'
       },
       '02': {
         title: '當前檢視：Folio II · 02. Reinforcement Learning & MDP (強化學習)',
         htmlUrl: 'html/02_reinforcement_learning_davinci.html',
-        pngUrl: 'png/02_reinforcement_learning.png'
+        pngUrl: 'png/02_reinforcement_learning.png',
+        aspect: 'a4',
+        metaRatio: 'A4 單頁比例 · 1588 × 2246 像素'
       },
       '03': {
         title: '當前檢視：Folio III · 03. Neural Networks & Backpropagation (A4 教學圖卡)',
         htmlUrl: 'html/03_neural_networks_davinci.html',
         pngUrl: 'png/03_neural_networks.png',
-        aspect: 'a4'
+        aspect: 'a4',
+        metaRatio: 'A4 單頁比例 · 1588 × 2246 像素'
       },
       '03sq': {
         title: '當前檢視：Social Folio · 03. Neural Networks & Backpropagation (1:1 正方形社群圖卡)',
         htmlUrl: 'html/03_neural_networks_square.html',
         pngUrl: 'png/03_neural_networks_square.png',
-        aspect: 'square'
+        aspect: 'square',
+        metaRatio: '1:1 正方形比例 · 1600 × 1600 像素'
+      },
+      '04': {
+        title: '當前檢視：Article Folio · 04. Generative Models: GAN & Diffusion (16:9 專欄橫幅圖卡)',
+        htmlUrl: 'html/04_generative_models_landscape.html',
+        pngUrl: 'png/04_generative_models_landscape.png',
+        aspect: 'landscape',
+        metaRatio: '16:9 專欄橫幅比例 · 2560 × 1440 像素'
       }
     };
 
@@ -287,13 +306,26 @@
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('tab' + id).classList.add('active');
 
-      // 漸變切換 iframe 內容與高度調整
+      // 漸變切換 iframe 內容與響應式尺寸調整
       const frame = document.getElementById('cardFrame');
+      const metaBar = document.querySelector('.card-meta-bar');
       frame.style.opacity = '0.4';
-      if (card.aspect === 'square') {
+
+      if (card.aspect === 'landscape') {
+        frame.style.width = '1320px';
+        frame.style.maxWidth = '96vw';
+        frame.style.height = '780px';
+        metaBar.style.width = '1320px';
+      } else if (card.aspect === 'square') {
+        frame.style.width = '840px';
+        frame.style.maxWidth = '95vw';
         frame.style.height = '840px';
+        metaBar.style.width = '840px';
       } else {
+        frame.style.width = '820px';
+        frame.style.maxWidth = '95vw';
         frame.style.height = '1160px';
+        metaBar.style.width = '820px';
       }
 
       setTimeout(() => {
@@ -305,6 +337,7 @@
       document.getElementById('btnDownload').href = card.pngUrl;
       document.getElementById('btnOpenHtml').href = card.htmlUrl;
       document.getElementById('cardMetaTitle').innerText = card.title;
+      document.getElementById('cardMetaRatio').innerText = card.metaRatio || '高解析度圖卡';
     }
   </script>
 

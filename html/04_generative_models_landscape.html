@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成對抗網絡與擴散模型 (橫式 16:9 專欄圖卡) - Generative Models</title>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Google Fonts: Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face {
+      font-family: 'JasonHandwriting5';
+      src: url('../assets/fonts/JasonHandwriting5.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --parchment-light: #faf4e6;
+      --parchment-base: #f0e4cb;
+      --parchment-dark: #dfceaa;
+      --ink-primary: #1e1309;
+      --ink-secondary: #362415;
+      --ink-muted: #5c4531;
+      --seal-red: #8f2223;
+      --prussian-blue: #15325b;
+      --antique-gold: #8a6310;
+      --border-ink: #322114;
+      --font-handwriting: 'Caveat', 'JasonHandwriting5', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #120d08;
+      font-family: var(--font-handwriting);
+      color: var(--ink-primary);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 16:9 橫式專欄標準容器 (1280px × 720px) */
+    .landscape-card {
+      width: 1280px;
+      height: 720px;
+      background: var(--parchment-base);
+      background-image: 
+        radial-gradient(circle at 50% 45%, rgba(255, 252, 245, 0.95) 0%, rgba(240, 228, 203, 0.8) 50%, rgba(195, 155, 100, 0.6) 88%, rgba(74, 47, 19, 0.85) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(50, 33, 20, 0.02) 3px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(50, 33, 20, 0.012) 4px);
+      padding: 24px 36px 18px 36px;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.85),
+        inset 0 0 55px rgba(110, 75, 35, 0.5),
+        inset 0 0 120px rgba(55, 30, 10, 0.65);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      border: 1.8px solid #9e7c4f;
+      overflow: hidden;
+    }
+
+    /* 水彩漬洗層 */
+    .parchment-wash-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: 
+        radial-gradient(circle at 12% 20%, rgba(184, 134, 11, 0.1) 0%, transparent 35%),
+        radial-gradient(circle at 88% 22%, rgba(139, 69, 19, 0.09) 0%, transparent 30%),
+        radial-gradient(circle at 35% 80%, rgba(160, 82, 45, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 75% 78%, rgba(184, 134, 11, 0.1) 0%, transparent 35%);
+      mix-blend-mode: multiply;
+    }
+
+    /* 雙線古典外框 */
+    .landscape-card::before {
+      content: "";
+      position: absolute;
+      top: 12px; left: 12px; right: 12px; bottom: 12px;
+      border: 2px solid var(--border-ink);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .landscape-card::after {
+      content: "";
+      position: absolute;
+      top: 16px; left: 16px; right: 16px; bottom: 16px;
+      border: 1px dashed rgba(50, 33, 20, 0.45);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .corner-ornament {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--seal-red);
+      background: var(--parchment-light);
+      z-index: 3;
+    }
+    .tl { top: 10px; left: 10px; }
+    .tr { top: 10px; right: 10px; }
+    .bl { bottom: 10px; left: 10px; }
+    .br { bottom: 10px; right: 10px; }
+
+    /* 頂部橫幅資訊區 */
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-ink);
+      padding-bottom: 4px;
+      position: relative;
+      z-index: 4;
+    }
+    .meta-text {
+      font-size: 15.5px;
+      letter-spacing: 0.5px;
+      color: var(--ink-secondary);
+      font-weight: 700;
+    }
+    .wax-seal {
+      width: 42px;
+      height: 42px;
+      background: var(--seal-red);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.25);
+      border: 2px dashed rgba(255, 255, 255, 0.45);
+      transform: rotate(-4deg);
+    }
+    .wax-seal span { font-size: 15px; line-height: 1; }
+
+    /* 幾何量測弧尺 */
+    .compass-scale {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--antique-gold);
+    }
+    .compass-scale-ticks {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 9px;
+      border-bottom: 1px solid var(--antique-gold);
+      padding-right: 2px;
+    }
+    .compass-scale-ticks span {
+      display: inline-block;
+      width: 1px;
+      background: var(--antique-gold);
+    }
+
+    /* 主標題區 */
+    .title-banner {
+      text-align: center;
+      margin: 6px 0 8px 0;
+      position: relative;
+      z-index: 4;
+    }
+    .title-banner h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+    .title-banner .subtitle {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--seal-red);
+      letter-spacing: 1.5px;
+      margin-top: 1px;
+    }
+    .handwritten-motto {
+      font-size: 15.5px;
+      color: var(--prussian-blue);
+      margin-top: 2px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    /* 橫向雙翼核心解剖區 (16:9 Horizontal Flow) */
+    .landscape-duo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      z-index: 4;
+      margin-bottom: 8px;
+    }
+
+    /* 左翼/右翼卡片 (顫筆邊框) */
+    .duo-card {
+      background: rgba(253, 248, 237, 0.72);
+      border: 1.8px solid var(--border-ink);
+      border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+      padding: 10px 14px;
+      position: relative;
+      box-shadow: 2px 3px 6px rgba(74, 47, 19, 0.08), inset 0 0 18px rgba(184, 134, 11, 0.08);
+    }
+    .duo-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1.5px dashed rgba(50, 33, 20, 0.4);
+      padding-bottom: 4px;
+      margin-bottom: 7px;
+    }
+    .duo-title {
+      font-size: 17.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+    .duo-tag {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--seal-red);
+    }
+
+    /* 數學公式嵌入條 */
+    .math-strip {
+      background: #f7eedb;
+      border: 1.2px solid var(--border-ink);
+      border-left: 4px solid var(--prussian-blue);
+      border-radius: 12px;
+      padding: 4px 8px;
+      margin: 6px 0;
+      font-size: 13.5px;
+    }
+    .math-strip .katex-display { margin: 2px 0; }
+
+    /* 底部三聯金句欄 */
+    .bottom-triptych {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      z-index: 4;
+      margin-bottom: 6px;
+    }
+    .triptych-mini {
+      background: rgba(252, 246, 235, 0.7);
+      border: 1.4px solid var(--border-ink);
+      border-radius: 235px 16px 245px 14px/14px 240px 18px 235px;
+      padding: 6px 10px;
+      font-size: 13px;
+      line-height: 1.33;
+    }
+    .triptych-mini strong {
+      color: var(--seal-red);
+      font-size: 14px;
+    }
+
+    /* 頁尾 */
+    footer {
+      border-top: 1px solid var(--border-ink);
+      padding-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      z-index: 4;
+    }
+    .signature {
+      font-family: 'Caveat', cursive;
+      font-size: 19px;
+      color: var(--ink-primary);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="landscape-card">
+    <div class="parchment-wash-layer"></div>
+    <div class="corner-ornament tl"></div>
+    <div class="corner-ornament tr"></div>
+    <div class="corner-ornament bl"></div>
+    <div class="corner-ornament br"></div>
+
+    <!-- 頂部題頭 (純粹拉丁題名) -->
+    <header class="header-top">
+      <div>
+        <div class="meta-text">Tractatus de Arte Generativa · 16:9 Landscape Article Folio</div>
+        <div style="font-size: 13.5px; color: var(--ink-muted); display:flex; align-items:center; gap:12px;">
+          <span>造假畫師之博弈天平 · 熱力擴散之逆流凝像</span>
+          <div class="compass-scale">
+            <span>[Scala Geometria]</span>
+            <div class="compass-scale-ticks">
+              <span style="height:3px;"></span><span style="height:6px;"></span><span style="height:3px;"></span>
+              <span style="height:9px;"></span><span style="height:3px;"></span><span style="height:6px;"></span>
+            </div>
+            <span>$t \in [0, T]$</span>
+          </div>
+        </div>
+      </div>
+      <div class="wax-seal">
+        <span>GEN</span>
+        16:9
+      </div>
+    </header>
+
+    <!-- 主標題區 (純粹副標) -->
+    <div class="title-banner">
+      <h1>Generative Adversarial Networks & Diffusion Models</h1>
+      <span class="subtitle">【生成對抗網絡與擴散模型】</span>
+      <div class="handwritten-motto">
+        "Ex nihilo forma oritur; per aemulationem et dispersionis retrogressum, veritas ficta coalescit."
+      </div>
+    </div>
+
+    <!-- 橫向雙翼核心解剖區 (GAN vs Diffusion 雙雄並立) -->
+    <div class="landscape-duo-grid">
+      <!-- 左翼：生成對抗網絡 GAN (造假畫師 vs 鑑寶審查官) -->
+      <div class="duo-card">
+        <div class="duo-card-header">
+          <span class="duo-title">I. 生成對抗網絡 (GAN: Duelling Artificers)</span>
+          <span class="duo-tag">極小極大博弈</span>
+        </div>
+
+        <!-- GAN 向量解剖 SVG：造假者畫筆 ➔ 仿作 ➔ 天平 ➔ 鑑寶官透鏡 -->
+        <svg width="100%" height="105" viewBox="0 0 570 105" style="background: rgba(255,255,255,0.4); border:1px solid #d4c5a5; border-radius:6px;">
+          <defs>
+            <pattern id="hatch-gan" width="5" height="5" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="5" stroke="#4a3828" stroke-width="0.8" opacity="0.3"/>
+            </pattern>
+          </defs>
+
+          <!-- 造假畫師 Generator G -->
+          <g transform="translate(30, 15)">
+            <circle cx="35" cy="35" r="30" fill="url(#hatch-gan)" stroke="#1e1309" stroke-width="1.4"/>
+            <!-- 畫筆圖案 -->
+            <line x1="20" y1="50" x2="50" y2="20" stroke="#8f2223" stroke-width="2.2" stroke-linecap="round"/>
+            <polygon points="50,20 54,16 57,23" fill="#8f2223"/>
+            <circle cx="35" cy="35" r="8" fill="#f0e4cb" stroke="#1e1309"/>
+            <text x="35" y="78" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="13" font-weight="700" fill="#8f2223" text-anchor="middle">造假畫師 G(z)</text>
+          </g>
+
+          <!-- 仿作流動箭頭 -->
+          <path d="M 105 50 Q 150 25 195 48" fill="none" stroke="#8f2223" stroke-width="1.8" stroke-dasharray="2,2"/>
+          <polygon points="198,50 188,46 190,55" fill="#8f2223"/>
+          <text x="150" y="32" font-family="'Caveat', cursive" font-size="13" font-weight="700" fill="#8f2223" text-anchor="middle">生成仿作 x_fake</text>
+
+          <!-- 中央博弈天平 (Battle of Wit) -->
+          <g transform="translate(260, 15)">
+            <line x1="25" y1="15" x2="25" y2="65" stroke="#1e1309" stroke-width="2"/>
+            <line x1="0" y1="30" x2="50" y2="35" stroke="#8a6310" stroke-width="2"/>
+            <ellipse cx="5" cy="48" rx="10" ry="3" fill="#e2d2b4" stroke="#8a6310"/>
+            <ellipse cx="45" cy="53" rx="10" ry="3" fill="#dfceaa" stroke="#15325b"/>
+            <circle cx="25" cy="32" r="2.5" fill="#8f2223"/>
+            <text x="25" y="78" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="13" font-weight="700" fill="#8a6310" text-anchor="middle">納許均衡 D(x)=½</text>
+          </g>
+
+          <!-- 真實樣本真跡 x_real -->
+          <path d="M 390 20 Q 345 28 310 48" fill="none" stroke="#15325b" stroke-width="1.6" stroke-dasharray="2,2"/>
+          <polygon points="307,50 317,52 315,43" fill="#15325b"/>
+
+          <!-- 鑑寶審查官 Discriminator D -->
+          <g transform="translate(450, 15)">
+            <circle cx="35" cy="35" r="30" fill="url(#hatch-gan)" stroke="#1e1309" stroke-width="1.4"/>
+            <!-- 放大透鏡 -->
+            <circle cx="35" cy="35" r="16" fill="rgba(21, 50, 91, 0.15)" stroke="#15325b" stroke-width="1.8"/>
+            <line x1="47" y1="47" x2="60" y2="60" stroke="#15325b" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="35" y="78" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="13" font-weight="700" fill="#15325b" text-anchor="middle">鑑寶官 D(x) 判真偽</text>
+          </g>
+        </svg>
+
+        <!-- GAN 零和博弈數學算子 -->
+        <div class="math-strip">
+          $$\min_G \max_D V(D, G) = \mathbb{E}_{x}[\log D(x)] + \mathbb{E}_{z}[\log (1 - D(G(z)))]$$
+        </div>
+        <p style="font-size:13px; color:var(--ink-secondary);">
+          造假者力求矇混過關，鑑寶官力求明察秋毫。零和對抗牽引兩者螺旋昇華，終使虛像與真跡莫辨。
+        </p>
+      </div>
+
+      <!-- 右翼：擴散模型 Diffusion (熱力學墨水擴散與逆時去噪) -->
+      <div class="duo-card">
+        <div class="duo-card-header">
+          <span class="duo-title">II. 擴散模型 (Diffusion: Thermodynamic Denoising)</span>
+          <span class="duo-tag" style="color:var(--prussian-blue);">時空逆流凝像</span>
+        </div>
+
+        <!-- 擴散多步解剖 SVG：真跡 ➔ 漸進加噪 ➔ 純高斯噪點 ➔ 逆向去噪復原 -->
+        <svg width="100%" height="105" viewBox="0 0 570 105" style="background: rgba(255,255,255,0.4); border:1px solid #d4c5a5; border-radius:6px;">
+          <!-- 階段一：清晰真蹟畫作 x_0 -->
+          <g transform="translate(25, 15)">
+            <rect x="0" y="0" width="60" height="60" fill="#faf4e6" stroke="#1e1309" stroke-width="1.4"/>
+            <!-- 蒙娜麗莎/達文西肖像素描微型線條 -->
+            <circle cx="30" cy="24" r="12" fill="none" stroke="#8f2223" stroke-width="1.2"/>
+            <path d="M 20 48 Q 30 36 40 48" fill="none" stroke="#8f2223" stroke-width="1.2"/>
+            <text x="30" y="76" font-family="'Caveat', cursive" font-size="13" font-weight="700" fill="#1e1309" text-anchor="middle">原圖 x_0</text>
+          </g>
+
+          <!-- 前向加噪流線 (Forward Noise q) -->
+          <path d="M 95 28 L 175 28" stroke="#5c4531" stroke-width="1.4" stroke-dasharray="2,2"/>
+          <polygon points="180,28 172,24 172,32" fill="#5c4531"/>
+          <text x="135" y="20" font-family="'Caveat', cursive" font-size="12" font-weight="700" fill="#5c4531" text-anchor="middle">q(x_t|x_t-1) 加噪 →</text>
+
+          <!-- 階段二：半模糊墨水彌散態 x_t -->
+          <g transform="translate(195, 15)">
+            <rect x="0" y="0" width="60" height="60" fill="#f0e4cb" stroke="#5c4531" stroke-width="1.2"/>
+            <!-- 噪點散落 -->
+            <circle cx="20" cy="22" r="1.5" fill="#5c4531"/>
+            <circle cx="35" cy="18" r="1.5" fill="#5c4531"/>
+            <circle cx="28" cy="38" r="2" fill="#8f2223" opacity="0.6"/>
+            <circle cx="45" cy="45" r="1.5" fill="#5c4531"/>
+            <text x="30" y="76" font-family="'Caveat', cursive" font-size="13" font-weight="700" fill="#5c4531" text-anchor="middle">彌散 x_t</text>
+          </g>
+
+          <!-- 逆向去噪流線 (Reverse Denoise p_theta) -->
+          <path d="M 335 55 L 265 55" stroke="#15325b" stroke-width="1.8"/>
+          <polygon points="260,55 268,51 268,59" fill="#15325b"/>
+          <text x="300" y="70" font-family="'Caveat', cursive" font-size="12" font-weight="700" fill="#15325b" text-anchor="middle">← p_θ 去噪復原</text>
+
+          <!-- 階段三：完全混沌純高斯噪點 x_T -->
+          <g transform="translate(350, 15)">
+            <rect x="0" y="0" width="60" height="60" fill="#dfceaa" stroke="#1e1309" stroke-width="1.4"/>
+            <!-- 密集噪點 -->
+            <circle cx="15" cy="15" r="1.2" fill="#1e1309"/>
+            <circle cx="45" cy="18" r="1.2" fill="#1e1309"/>
+            <circle cx="25" cy="32" r="1.2" fill="#1e1309"/>
+            <circle cx="48" cy="45" r="1.2" fill="#1e1309"/>
+            <circle cx="18" cy="48" r="1.2" fill="#1e1309"/>
+            <circle cx="35" cy="52" r="1.2" fill="#1e1309"/>
+            <text x="30" y="76" font-family="'Caveat', cursive" font-size="13" font-weight="700" fill="#1e1309" text-anchor="middle">純噪點 x_T</text>
+          </g>
+
+          <!-- 得分神經網絡標記 (Score Matching) -->
+          <g transform="translate(440, 20)">
+            <circle cx="45" cy="30" r="24" fill="#faf4e6" stroke="#15325b" stroke-width="1.5" stroke-dasharray="3,1"/>
+            <text x="45" y="28" font-family="'Caveat', cursive" font-size="13" font-weight="700" fill="#15325b" text-anchor="middle">ε_θ(x_t, t)</text>
+            <text x="45" y="44" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="12.5" font-weight="700" fill="#8f2223" text-anchor="middle">噪聲預測器</text>
+          </g>
+        </svg>
+
+        <!-- 擴散逆向步進方程 -->
+        <div class="math-strip">
+          $$x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta(x_t, t) \right) + \sigma_t \mathbf{z}$$
+        </div>
+        <p style="font-size:13px; color:var(--ink-secondary);">
+          將墨水融入水之熱力學熵增過程徹底逆轉，神經網絡於百步微雕中，硬將純粹噪點喚醒為傳世名畫。
+        </p>
+      </div>
+    </div>
+
+    <!-- 底部三聯專欄金句 -->
+    <div class="bottom-triptych">
+      <div class="triptych-mini">
+        <strong>1. 對抗博弈流形：</strong>
+        GAN 捨棄了顯式概率密度計算，以造假者與鑑寶官之雙雄博弈，直接淬鍊出高維潛在空間 (Latent Space) 之幾何骨骼。
+      </div>
+      <div class="triptych-mini">
+        <strong>2. 非平衡熱力學逆流：</strong>
+        擴散模型向物理學借火，以朗之萬動態與得分匹配 (Score Matching)，實現了隨機噪點向結構秩序的無損凝結。
+      </div>
+      <div class="triptych-mini">
+        <strong>3. 從虛無到極致萬象：</strong>
+        自微茫噪聲起步，終破文字、語音與光影之界限。文藝復興達文西之造物夢想，終在現代高維幾何中化為現實。
+      </div>
+    </div>
+
+    <!-- 頁尾動態題註 -->
+    <footer>
+      <div>Tractatus IV: De Arte Generativa · GAN-DIFF-04</div>
+      <div class="signature">Daedalus & Machina scripsit</div>
+      <div>Anno Domini 2026 · Typographia 16:9</div>
+    </footer>
+  </div>
+
+</body>
+</html>
