@@ -29,18 +29,21 @@
 
 ## 二、 筆觸與紋理規範 (Brushwork & Textures)
 
-1. **古典羊皮紙焦邊與琥珀洗色 (Burnt Parchment & Sepia Washes)**：
+1. **手繪不規則墨水線條 (Organic Hand-Drawn Jittered Borders)**：
+   * 告別現代死板直角線條，所有區塊（三元組草圖卡、數學卷軸、中央解剖圖容器、比較表格、案例三聯畫）全面採用 **手繪有機顫筆邊框**（`border-radius: 255px 15px 225px 15px/15px 225px 15px 255px` 與細微起伏墨水粗細）。
+   * 分隔線（Section Dividers）採用鋼筆落筆至收筆的**自然濃淡漸層毛邊筆觸**，呈現真實鵝毛筆/沾水筆在古紙上的墨水沉積與擴散痕跡。
+2. **古典羊皮紙焦邊與琥珀洗色 (Burnt Parchment & Sepia Washes)**：
    * 邊緣具備古典焦褐暈染 (`inset 0 0 110px rgba(55, 30, 10, 0.55)`) 與自然邊緣暗角。
    * 疊加多層微型水彩洗色層（Amber & Sepia Washes），模擬長年保存的手稿水漬與天然纖維雜質。
    * 內部各區塊小卡（三元組、數學卷軸、案例三聯畫）同步融入古紙泛黃與微光澤層次。
-2. **雙線典雅外框 (Double Border Framing)**：
+3. **雙線典雅外框 (Double Border Framing)**：
    * 外層：`2px solid #322114`，距離紙張邊緣 `14px`。
    * 內層：`1px dashed rgba(50, 33, 20, 0.5)`，距離外層 `4px`。
    * 四角：配有 `14px × 14px` 的古典朱砂紅四角花飾（Corner Florets）。
-3. **古典素描交叉排線 (Cross-Hatching)**：
+4. **古典素描交叉排線 (Cross-Hatching)**：
    * 嚴格**禁止使用現代模糊半透明陰影** (`blur filter` 或 `box-shadow blur`)。
    * 陰影一律採用 **SVG 或 CSS 交叉排線**（$45^\circ$ 細斜線），模擬古籍銅版畫與鋼筆素描的陰影手感。
-4. **火漆印章標記 (Wax Seal Stamp)**：
+5. **火漆印章標記 (Wax Seal Stamp)**：
    * 每張圖卡右上角必須包含一枚圓形朱砂紅火漆印章（如 `ABM FOLIO I`），旋轉 $-5^\circ$，帶有內陰影與細虛線圈。
 
 ---

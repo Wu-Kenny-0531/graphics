@@ -218,7 +218,7 @@
       margin-right: auto;
     }
 
-    /* Section Dividers */
+    /* Hand-Drawn Section Dividers with Natural Ink Tapering */
     .manuscript-section-title {
       font-family: var(--font-handwriting);
       font-size: 19px;
@@ -227,10 +227,20 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      border-bottom: 1px solid var(--border-ink);
-      padding-bottom: 2px;
-      margin-bottom: 6px;
+      padding-bottom: 3px;
+      margin-bottom: 7px;
       letter-spacing: 0.5px;
+      position: relative;
+    }
+    .manuscript-section-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: radial-gradient(ellipse at 30% 50%, var(--border-ink) 0%, rgba(50, 33, 20, 0.4) 75%, transparent 100%);
+      border-radius: 40% 60% 70% 30% / 50% 30% 70% 50%;
     }
     .section-num {
       color: var(--seal-red);
@@ -246,19 +256,21 @@
       margin-bottom: 10px;
     }
 
-    /* Sketch Cards with Engraved Framing & Sepia Watermark Wash */
+    /* Sketch Cards with Hand-Drawn Jittered Borders & Natural Ink Bleed */
     .sketch-card {
       background: rgba(253, 248, 237, 0.72);
-      border: 1px solid var(--border-ink);
+      border: 1.5px solid var(--border-ink);
+      border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
       padding: 9px 12px;
       position: relative;
-      box-shadow: inset 0 0 15px rgba(184, 134, 11, 0.08);
+      box-shadow: 1px 2px 3px rgba(74, 47, 19, 0.08), inset 0 0 15px rgba(184, 134, 11, 0.08);
     }
     .sketch-card::before {
       content: "";
       position: absolute;
-      top: 2px; left: 2px; right: 2px; bottom: 2px;
-      border: 1px solid rgba(59, 42, 29, 0.25);
+      top: 3px; left: 3px; right: 3px; bottom: 3px;
+      border: 1px dashed rgba(59, 42, 29, 0.28);
+      border-radius: 240px 18px 230px 12px/12px 235px 18px 240px;
       pointer-events: none;
     }
     .triad-item {
@@ -272,37 +284,39 @@
       font-size: 16.5px;
     }
 
-    /* Mathematical Parchment Scroll with Aged Amber Tint */
+    /* Mathematical Parchment Scroll with Jittery Hand-Drawn Ink Edges */
     .math-scroll {
       background: #f7eedb;
       background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 60%);
-      border: 1px solid var(--border-ink);
-      border-left: 4px solid var(--prussian-blue);
+      border: 1.5px solid var(--border-ink);
+      border-left: 4.5px solid var(--prussian-blue);
+      border-radius: 250px 18px 230px 15px/15px 235px 18px 245px;
       padding: 8px 12px;
       position: relative;
-      box-shadow: 2px 2px 8px rgba(74, 47, 19, 0.12), inset 0 0 20px rgba(160, 110, 50, 0.12);
+      box-shadow: 2px 3px 6px rgba(74, 47, 19, 0.12), inset 0 0 20px rgba(160, 110, 50, 0.12);
     }
     .math-scroll .katex-display { margin: 3px 0; }
     .math-scroll .math-caption {
       font-size: 14px;
       color: var(--ink-muted);
       line-height: 1.3;
-      border-top: 1px dashed rgba(59, 42, 29, 0.3);
+      border-top: 1.2px dashed rgba(59, 42, 29, 0.35);
       padding-top: 3px;
       margin-top: 3px;
     }
 
-    /* Centerpiece: Da Vinci Style Anatomical Emergence Diagram */
+    /* Centerpiece: Da Vinci Style Center Diagram with Hand-Drawn Contour */
     .center-manuscript-diagram {
       background: #f9f2e3;
       background-image: 
         radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 70%),
         radial-gradient(circle at 15% 85%, rgba(184, 134, 11, 0.08) 0%, transparent 40%);
-      border: 1.5px solid var(--border-ink);
+      border: 1.8px solid var(--border-ink);
+      border-radius: 245px 20px 255px 18px/18px 250px 16px 245px;
       padding: 9px;
       margin-bottom: 10px;
       position: relative;
-      box-shadow: inset 0 0 25px rgba(110, 75, 35, 0.15);
+      box-shadow: 2px 3px 7px rgba(74, 47, 19, 0.1), inset 0 0 25px rgba(110, 75, 35, 0.15);
     }
     .diagram-header-bar {
       display: flex;
@@ -312,23 +326,34 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--ink-secondary);
-      border-bottom: 1px dashed var(--border-ink);
+      border-bottom: 1.5px dashed rgba(50, 33, 20, 0.5);
       padding-bottom: 3px;
       margin-bottom: 5px;
     }
 
-    /* Hand-Drawn Comparison Table */
+    /* Hand-Drawn Comparison Table with Organic Pen Ink Borders */
     .codex-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 15px;
       margin-bottom: 10px;
-      box-shadow: 0 2px 6px rgba(74, 47, 19, 0.08);
+      border: 1.8px solid var(--border-ink);
+      border-radius: 240px 15px 235px 18px/18px 240px 15px 235px;
+      overflow: hidden;
+      box-shadow: 2px 3px 6px rgba(74, 47, 19, 0.08);
     }
     .codex-table th, .codex-table td {
-      border: 1px solid var(--border-ink);
+      border-right: 1.2px solid var(--border-ink);
+      border-bottom: 1.2px solid var(--border-ink);
       padding: 5px 9px;
       text-align: left;
+    }
+    .codex-table th:last-child, .codex-table td:last-child {
+      border-right: none;
+    }
+    .codex-table tr:last-child td {
+      border-bottom: none;
     }
     .codex-table th {
       background: #e2d2b4;
@@ -337,23 +362,25 @@
       font-size: 16.5px;
       font-weight: 700;
       color: var(--ink-primary);
+      border-bottom: 1.8px solid var(--border-ink);
     }
     .codex-table tr:nth-child(even) td { background: rgba(245, 235, 215, 0.6); }
     .codex-table tr:nth-child(odd) td { background: rgba(255, 250, 240, 0.45); }
     .codex-table td strong { color: var(--seal-red); font-size: 15.5px; }
 
-    /* Three Case Studies in Ancient Manuscript Boxes */
+    /* Three Case Studies in Ancient Manuscript Boxes with Hand-Drawn Jitter */
     .cases-triptych {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
     .triptych-card {
-      border: 1px solid var(--border-ink);
+      border: 1.5px solid var(--border-ink);
+      border-radius: 235px 16px 245px 14px/14px 240px 18px 235px;
       background: rgba(252, 246, 235, 0.75);
       padding: 6px 9px;
       position: relative;
-      box-shadow: inset 0 0 12px rgba(160, 110, 50, 0.1);
+      box-shadow: 1px 2px 4px rgba(74, 47, 19, 0.08), inset 0 0 12px rgba(160, 110, 50, 0.1);
     }
     .triptych-seal {
       display: inline-block;
