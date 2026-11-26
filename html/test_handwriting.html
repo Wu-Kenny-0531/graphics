@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>明顯手寫字體候選預覽 (Distinct Handwriting Fonts)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Load multiple distinct handwriting fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Homemade+Apple&family=Long+Cang&family=Ma+Shan+Zheng&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f4ecdc;
+      padding: 40px 30px;
+      color: #23180f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+      color: #9e2a2b;
+      font-family: 'Zhi Mang Xing', cursive;
+    }
+    p.intro {
+      text-align: center;
+      font-size: 15px;
+      color: #4a3828;
+      margin-bottom: 25px;
+    }
+    .font-sample-card {
+      background: #faf5eb;
+      border: 1.5px solid #3b2a1d;
+      border-radius: 6px;
+      padding: 18px 24px;
+      margin-bottom: 20px;
+      box-shadow: 3px 4px 10px rgba(0,0,0,0.1);
+    }
+    .font-name-badge {
+      display: inline-block;
+      background: #9e2a2b;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .sample-title {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #23180f;
+      line-height: 1.2;
+    }
+    .sample-body {
+      font-size: 19px;
+      line-height: 1.5;
+      color: #3b2a1d;
+    }
+    .sample-math-note {
+      font-size: 16px;
+      color: #1b3b6f;
+      margin-top: 6px;
+    }
+
+    /* Distinct Styles */
+    .font-long-cang {
+      font-family: 'Caveat', 'Long Cang', cursive;
+    }
+    .font-zhi-mang {
+      font-family: 'Caveat', 'Zhi Mang Xing', cursive;
+    }
+    .font-ma-shan {
+      font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+    }
+    .font-homemade-apple {
+      font-family: 'Homemade Apple', 'Long Cang', cursive;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>手寫字體候選效果對比</h1>
+    <p class="intro">針對「更具強烈手寫筆觸、隨性感與真實手札筆意」的需求，為您挑選了三種極具個性特徵的字體：</p>
+
+    <!-- Option 1: Long Cang (龍藏體) -->
+    <div class="font-sample-card font-long-cang">
+      <span class="font-name-badge">候選 1：龍藏體 (Long Cang) + Caveat ——【強烈推薦：自由瀟灑手札感】</span>
+      <div class="sample-title">Agent-Based Model 代理人基礎模型</div>
+      <div class="sample-body">
+        由下而上的計算模擬：個體依循局部微觀規則互動，自發湧現出宏觀複雜群體秩序。<br>
+        大自然從不直接頒布宏觀法令，而是任由微型主體在碰撞中生息演化。
+      </div>
+      <div class="sample-math-note">
+        ✎ 筆觸特點：連筆極其自然，字型傾斜隨性，帶有強烈的隨筆手寫感，完全沒有任何死板的印刷感！
+      </div>
+    </div>
+
+    <!-- Option 2: Zhi Mang Xing (志莽行書) -->
+    <div class="font-sample-card font-zhi-mang">
+      <span class="font-name-badge" style="background:#1b3b6f;">候選 2：志莽行書 (Zhi Mang Xing) ——【古典文人行書墨跡感】</span>
+      <div class="sample-title">Agent-Based Model 代理人基礎模型</div>
+      <div class="sample-body">
+        由下而上的計算模擬：個體依循局部微觀規則互動，自發湧現出宏觀複雜群體秩序。<br>
+        大自然從不直接頒布宏觀法令，而是任由微型主體在碰撞中生息演化。
+      </div>
+      <div class="sample-math-note">
+        ✎ 筆觸特點：筆鋒蒼勁、行氣連貫，具有古典手抄本、古籍墨水筆記的文人書法手感。
+      </div>
+    </div>
+
+    <!-- Option 3: Ma Shan Zheng (馬善政楷書) -->
+    <div class="font-sample-card font-ma-shan">
+      <span class="font-name-badge" style="background:#4a3828;">候選 3：馬善政體 (Ma Shan Zheng) ——【古樸硬筆手寫感】</span>
+      <div class="sample-title">Agent-Based Model 代理人基礎模型</div>
+      <div class="sample-body">
+        由下而上的計算模擬：個體依循局部微觀規則互動，自發湧現出宏觀複雜群體秩序。<br>
+        大自然從不直接頒布宏觀法令，而是任由微型主體在碰撞中生息演化。
+      </div>
+      <div class="sample-math-note">
+        ✎ 筆觸特點：筆劃厚重扎實，手寫頓挫明顯，古拙質樸。
+      </div>
+    </div>
+
+    <!-- Option 4: Homemade Apple (極致狂放英文鋼筆手寫) -->
+    <div class="font-sample-card font-homemade-apple">
+      <span class="font-name-badge" style="background:#a67c1e;">候選 4：Homemade Apple 英文極致古典鋼筆 + 龍藏體</span>
+      <div class="sample-title" style="font-size:24px;">Tractatus de Emergentia (1971 Folio)</div>
+      <div class="sample-body">
+        "Natura non praecipit sed ex minimis causis maximos effectus conspirat."<br>
+        微觀個體的簡單偏好，在宏觀層面織就出完全意料之外的複雜秩序。
+      </div>
+      <div class="sample-math-note">
+        ✎ 筆觸特點：英文如同 16 世紀羽毛筆/鋼筆快速草寫，極具達文西私密日記的氛圍。
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

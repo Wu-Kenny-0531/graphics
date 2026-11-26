@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>風格 A：純手寫手稿風 - Agent-Based Model</title>
+  <title>達文西手繪手稿圖卡 (龍藏體) - Agent-Based Model</title>
   <!-- KaTeX -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
           onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
-  <!-- Google Fonts: 100% Handwritten English & Traditional Chinese -->
+  <!-- Google Fonts: Long Cang (龍藏體) + Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Klee+One:wght@400;600&family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Long+Cang&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -20,14 +20,14 @@
       --parchment-base: #f4ecdc;
       --parchment-dark: #e8dcbf;
       --ink-primary: #23180f;
-      --ink-secondary: #423223;
-      --ink-muted: #6b5642;
+      --ink-secondary: #3d2d1e;
+      --ink-muted: #66503b;
       --seal-red: #9e2a2b;
       --seal-red-light: #b53839;
       --prussian-blue: #1b3b6f;
-      --antique-gold: #996e14;
+      --antique-gold: #946c14;
       --border-ink: #3b2a1d;
-      --font-handwriting: 'Caveat', 'Klee One', cursive, serif;
+      --font-handwriting: 'Caveat', 'Long Cang', cursive;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +39,7 @@
       display: flex;
       justify-content: center;
       padding: 30px 10px;
-      line-height: 1.4;
+      line-height: 1.35;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -49,9 +49,9 @@
       min-height: 1123px;
       background: var(--parchment-base);
       background-image: 
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.45) 0%, rgba(216, 198, 163, 0.4) 100%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0%, rgba(216, 198, 163, 0.42) 100%),
         repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 42, 29, 0.015) 3px);
-      padding: 34px 40px;
+      padding: 32px 38px;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), inset 0 0 80px rgba(110, 80, 45, 0.22);
       display: flex;
       flex-direction: column;
@@ -96,16 +96,15 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid var(--border-ink);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
       position: relative;
     }
     .meta-text {
-      font-size: 15px;
-      font-family: var(--font-handwriting);
-      letter-spacing: 1px;
+      font-size: 16px;
+      letter-spacing: 0.5px;
       color: var(--ink-secondary);
-      font-weight: 600;
+      font-weight: 700;
     }
     .wax-seal {
       width: 46px;
@@ -118,24 +117,23 @@
       align-items: center;
       justify-content: center;
       font-family: var(--font-handwriting);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.5px;
       box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.25);
       border: 2px dashed rgba(255, 255, 255, 0.45);
       transform: rotate(-5deg);
     }
-    .wax-seal span { font-size: 15px; font-weight: 700; line-height: 1; }
+    .wax-seal span { font-size: 16px; line-height: 1; }
 
     /* Main Title Block */
     .title-banner {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       position: relative;
     }
     .title-banner h1 {
       font-family: var(--font-handwriting);
-      font-size: 34px;
+      font-size: 35px;
       font-weight: 700;
       color: var(--ink-primary);
       letter-spacing: 0.5px;
@@ -144,56 +142,56 @@
     .title-banner .subtitle {
       display: block;
       font-family: var(--font-handwriting);
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
       color: var(--seal-red);
-      letter-spacing: 1px;
-      margin-top: 3px;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
     }
     .handwritten-intro {
       font-family: var(--font-handwriting);
-      font-size: 17px;
+      font-size: 17.5px;
       color: var(--prussian-blue);
-      margin-top: 4px;
+      margin-top: 3px;
       line-height: 1.35;
-      max-width: 92%;
+      max-width: 94%;
       margin-left: auto;
       margin-right: auto;
     }
 
-    /* Sketch Section Dividers */
+    /* Section Dividers */
     .manuscript-section-title {
       font-family: var(--font-handwriting);
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--ink-primary);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       border-bottom: 1px solid var(--border-ink);
       padding-bottom: 2px;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
       letter-spacing: 0.5px;
     }
     .section-num {
       color: var(--seal-red);
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
     }
 
     /* Section 1: The Triad & Micro Anatomy (2-Columns) */
     .two-col-sketch {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     /* Sketch Cards with Engraved Framing */
     .sketch-card {
       background: rgba(255, 255, 255, 0.45);
       border: 1px solid var(--border-ink);
-      padding: 9px 12px;
+      padding: 8px 12px;
       position: relative;
     }
     .sketch-card::before {
@@ -205,15 +203,13 @@
     }
     .triad-item {
       margin-bottom: 5px;
-      font-size: 13.5px;
+      font-size: 15px;
       line-height: 1.35;
     }
     .triad-item:last-child { margin-bottom: 0; }
     .triad-item strong {
       color: var(--seal-red);
-      font-family: var(--font-handwriting);
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 16.5px;
     }
 
     /* Mathematical Parchment Scroll */
@@ -221,25 +217,25 @@
       background: #faf7f0;
       border: 1px solid var(--border-ink);
       border-left: 3px solid var(--prussian-blue);
-      padding: 8px 12px;
+      padding: 7px 12px;
       position: relative;
     }
-    .math-scroll .katex-display { margin: 4px 0; }
+    .math-scroll .katex-display { margin: 3px 0; }
     .math-scroll .math-caption {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--ink-muted);
       line-height: 1.3;
       border-top: 1px dashed rgba(59, 42, 29, 0.25);
-      padding-top: 4px;
-      margin-top: 4px;
+      padding-top: 3px;
+      margin-top: 3px;
     }
 
     /* Centerpiece: Da Vinci Style Anatomical Emergence Diagram */
     .center-manuscript-diagram {
       background: #fbf8f2;
       border: 1.5px solid var(--border-ink);
-      padding: 10px;
-      margin-bottom: 12px;
+      padding: 9px;
+      margin-bottom: 10px;
       position: relative;
     }
     .diagram-header-bar {
@@ -247,20 +243,20 @@
       justify-content: space-between;
       align-items: baseline;
       font-family: var(--font-handwriting);
-      font-size: 14.5px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--ink-secondary);
       border-bottom: 1px dashed var(--border-ink);
       padding-bottom: 3px;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     /* Hand-Drawn Comparison Table */
     .codex-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13.5px;
-      margin-bottom: 12px;
+      font-size: 15px;
+      margin-bottom: 10px;
     }
     .codex-table th, .codex-table td {
       border: 1px solid var(--border-ink);
@@ -270,12 +266,12 @@
     .codex-table th {
       background: #ebe0ca;
       font-family: var(--font-handwriting);
-      font-size: 14.5px;
-      font-weight: 600;
+      font-size: 16.5px;
+      font-weight: 700;
       color: var(--ink-primary);
     }
     .codex-table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.35); }
-    .codex-table td strong { color: var(--seal-red); font-size: 14px; }
+    .codex-table td strong { color: var(--seal-red); font-size: 15.5px; }
 
     /* Three Case Studies in Ancient Manuscript Boxes */
     .cases-triptych {
@@ -286,26 +282,26 @@
     .triptych-card {
       border: 1px solid var(--border-ink);
       background: rgba(255, 255, 255, 0.5);
-      padding: 7px 10px;
+      padding: 6px 9px;
       position: relative;
     }
     .triptych-seal {
       display: inline-block;
       font-family: var(--font-handwriting);
-      font-size: 12.5px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--seal-red);
       border-bottom: 1px solid var(--seal-red);
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
     .triptych-card h5 {
-      font-size: 14.5px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--ink-primary);
       margin-bottom: 2px;
     }
     .triptych-card p {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--ink-secondary);
       line-height: 1.35;
     }
@@ -313,19 +309,19 @@
     /* Footer & Stamp */
     footer {
       border-top: 1px solid var(--border-ink);
-      padding-top: 6px;
+      padding-top: 5px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-handwriting);
-      font-size: 13.5px;
+      font-size: 15px;
       color: var(--ink-muted);
     }
     .signature {
       font-family: 'Caveat', cursive;
-      font-size: 19px;
+      font-size: 21px;
       color: var(--ink-primary);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     @media print {
@@ -346,8 +342,8 @@
     <!-- Header & Wax Seal -->
     <header class="header-top">
       <div>
-        <div class="meta-text">Tractatus Computatorius · 手繪手稿考卷</div>
-        <div style="font-size: 13px; color: var(--ink-muted);">
+        <div class="meta-text">Tractatus Computatorius · 達文西手繪手稿考卷</div>
+        <div style="font-size: 14.5px; color: var(--ink-muted);">
           微觀行為之微小偏好 · 宏觀秩序之必然湧現
         </div>
       </div>
@@ -398,9 +394,9 @@
             <span class="section-num">II.</span> 微觀轉移與湧現算子 (Calculus)
           </div>
           <div class="math-scroll">
-            <div style="font-size:13.5px; font-weight:600; color:var(--seal-red);">微觀主體時序演進：</div>
+            <div style="font-size:15px; font-weight:700; color:var(--seal-red);">微觀主體時序演進：</div>
             $$s_i(t+1) = f\Big(s_i(t), \; \mathcal{N}_i(t), \; E(t)\Big)$$
-            <div style="font-size:13.5px; font-weight:600; color:var(--prussian-blue); margin-top:3px;">宏觀全域湧現觀測量：</div>
+            <div style="font-size:15px; font-weight:700; color:var(--prussian-blue); margin-top:2px;">宏觀全域湧現觀測量：</div>
             $$M(t) = \mathcal{G}\Big(\{s_i(t)\}_{i=1}^N\Big) \approx \frac{1}{N}\sum_{i=1}^N g(s_i(t))$$
             <div class="math-caption">
               註：$\mathcal{N}_i$ 為鄰近幾何鄰域，$M(t)$ 具備不可化約之非線性相變特性。
@@ -415,7 +411,7 @@
           <span>Figura I. 自組織湧現之手繪幾何解剖圖</span>
           <span style="color:var(--seal-red);">局部規則 (Local Rules) ➔ 宏觀湧現 (Emergence)</span>
         </div>
-        <!-- Hand-drawn vector sketch SVG with handwritten fonts -->
+        <!-- Hand-drawn vector sketch SVG with Long Cang handwritten fonts -->
         <svg width="100%" height="155" viewBox="0 0 710 155" style="background: rgba(255,255,255,0.3); border:1px solid #d4c5a5;">
           <defs>
             <pattern id="hatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
@@ -425,21 +421,17 @@
 
           <!-- Left Anatomy: Single Agent Structure -->
           <g transform="translate(15, 8)">
-            <!-- Outer dashed compass circle -->
             <circle cx="65" cy="65" r="58" fill="url(#hatch)" stroke="#3b2a1d" stroke-width="1.2" stroke-dasharray="3,3"/>
             <circle cx="65" cy="65" r="50" fill="none" stroke="#a67c1e" stroke-width="0.8"/>
-            <!-- Sensory Cone -->
             <path d="M 65 65 L 110 35 A 50 50 0 0 1 115 85 Z" fill="rgba(158, 42, 43, 0.15)" stroke="#9e2a2b" stroke-width="1"/>
-            <!-- Agent core gear -->
             <circle cx="65" cy="65" r="16" fill="#f4ecdc" stroke="#23180f" stroke-width="1.8"/>
             <circle cx="65" cy="65" r="6" fill="#9e2a2b"/>
-            <!-- Direction pointer -->
             <line x1="65" y1="65" x2="100" y2="50" stroke="#23180f" stroke-width="2"/>
             <polygon points="105,48 97,45 99,55" fill="#23180f"/>
             <!-- Handwritten Labels in SVG -->
-            <text x="65" y="138" font-family="'Caveat', 'Klee One', cursive" font-size="13" font-weight="600" fill="#23180f" text-anchor="middle">主體解剖：感知半徑與指向</text>
-            <text x="110" y="28" font-family="'Caveat', cursive" font-size="14" font-weight="600" fill="#9e2a2b">感知錐 N_i</text>
-            <text x="25" y="48" font-family="'Caveat', cursive" font-size="14" font-weight="600" fill="#1b3b6f">內部狀態 s_i</text>
+            <text x="65" y="139" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#23180f" text-anchor="middle">主體解剖：感知半徑與指向</text>
+            <text x="110" y="28" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#9e2a2b">感知錐 N_i</text>
+            <text x="25" y="48" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#1b3b6f">內部狀態 s_i</text>
           </g>
 
           <!-- Middle: Evolution Arrow & Compass Rose -->
@@ -447,8 +439,8 @@
             <line x1="20" y1="55" x2="150" y2="55" stroke="#3b2a1d" stroke-width="1.5"/>
             <polygon points="155,55 145,50 145,60" fill="#3b2a1d"/>
             <circle cx="85" cy="55" r="24" fill="none" stroke="#a67c1e" stroke-width="0.8" stroke-dasharray="2,2"/>
-            <text x="85" y="40" font-family="'Caveat', cursive" font-size="15" font-weight="700" fill="#9e2a2b" text-anchor="middle">Iteratio</text>
-            <text x="85" y="77" font-family="'Caveat', 'Klee One', cursive" font-size="13.5" font-weight="600" fill="#4a3828" text-anchor="middle">局部迭代：避碰、對齊、聚類</text>
+            <text x="85" y="40" font-family="'Caveat', cursive" font-size="16" font-weight="700" fill="#9e2a2b" text-anchor="middle">Iteratio</text>
+            <text x="85" y="78" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#4a3828" text-anchor="middle">局部迭代：避碰、對齊、聚類</text>
           </g>
 
           <!-- Right: Macro Emergence Vortex -->
@@ -466,7 +458,7 @@
               <circle cx="5" cy="-6" r="3" fill="#9e2a2b"/>
               <circle cx="2" cy="7" r="3" fill="#9e2a2b"/>
               <circle cx="-7" cy="6" r="3" fill="#9e2a2b"/>
-              <text x="0" y="28" font-family="'Caveat', 'Klee One', cursive" font-size="13" font-weight="600" fill="#9e2a2b" text-anchor="middle">同質聚落 (同化)</text>
+              <text x="0" y="30" font-family="'Caveat', 'Long Cang', cursive" font-size="14.5" font-weight="700" fill="#9e2a2b" text-anchor="middle">同質聚落 (同化)</text>
             </g>
 
             <!-- Cluster Beta (Blue Swarm) -->
@@ -476,10 +468,10 @@
               <polygon points="12,-2 16,7 8,7" fill="#1b3b6f" transform="rotate(45 12 -2)"/>
               <polygon points="-10,8 -6,17 -14,17" fill="#1b3b6f" transform="rotate(45 -10 8)"/>
               <polygon points="5,14 9,23 1,23" fill="#1b3b6f" transform="rotate(45 5 14)"/>
-              <text x="0" y="38" font-family="'Caveat', 'Klee One', cursive" font-size="13" font-weight="600" fill="#1b3b6f" text-anchor="middle">協同群飛 (秩序)</text>
+              <text x="0" y="40" font-family="'Caveat', 'Long Cang', cursive" font-size="14.5" font-weight="700" fill="#1b3b6f" text-anchor="middle">協同群飛 (秩序)</text>
             </g>
 
-            <text x="172" y="126" font-family="'Caveat', 'Klee One', cursive" font-size="13.5" font-weight="600" fill="#23180f" text-anchor="middle">
+            <text x="172" y="126" font-family="'Caveat', 'Long Cang', cursive" font-size="15" font-weight="700" fill="#23180f" text-anchor="middle">
               宏觀湧現：無中央指揮下，自發結成高度凝聚之群體秩序
             </text>
           </g>

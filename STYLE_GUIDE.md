@@ -85,11 +85,11 @@
 
 | 用途層級 | 字型族系 (Font Family) | 字重 | 樣式特色 |
 | :--- | :--- | :--- | :--- |
-| **中文全域字體** | `Klee One` (Google Fonts) | 400 / 600 | 典雅硬筆手寫字體，兼具極佳閱讀清晰度與自然手寫筆意 |
+| **中文全域字體** | `Long Cang` (龍藏體, Google Fonts) | Regular | 自由灑脫的手寫鋼筆草記體，連筆自然，具備強烈的學者私密手札感 |
 | **英文 / 數字 / 符號** | `Caveat` (Google Fonts) | 600 / 700 | 流暢靈動的古典鋼筆草寫風格，自帶學者手札呼吸感 |
-| **圖解 SVG 標籤** | `'Caveat', 'Klee One'` | 600 | 向量圖解內部所有註釋同步手寫化 |
+| **圖解 SVG 標籤** | `'Caveat', 'Long Cang'` | Regular | 向量圖解內部所有註釋同步採用龍藏體手寫化 |
 | **數學公式** | **KaTeX Engine** | Regular | 與深褐墨水色融合，融入古典紙質邊框 |
-| **全域 CSS 宣告** | `font-family: 'Caveat', 'Klee One', cursive, serif;` | - | 確保整頁無任何死板印刷字型，達成純粹真實手稿感 |
+| **全域 CSS 宣告** | `font-family: 'Caveat', 'Long Cang', cursive;` | - | 確保整頁無任何死板印刷字型，達成純粹真實手稿感 |
 
 ---
 
