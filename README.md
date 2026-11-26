@@ -1,39 +1,23 @@
-# 單頁教學圖卡生成專案
+# Agent-Based Model (ABM) 單頁教學圖卡
 
-本專案旨在將知識主題提煉為 **統一風格的單頁 A4 教學圖卡**，支援 LaTeX 數學排版、結構化筆記審查、HTML 預覽以及高畫質生動 PNG 輸出。
-
----
-
-## 專案目錄結構
-
-```text
-圖卡生成專案/
-├── notes/               # 階段 1：主題筆記草稿（Markdown，含核心圖卡區與補充區、LaTeX 公式）
-├── html/                # 階段 2：單頁 A4 教學圖卡網頁（HTML + CSS + KaTeX）
-├── png/                 # 階段 3：高解析度生動圖卡（PNG，A4 直式）
-├── scripts/             # 自動化工具腳本（Python 轉檔截圖等）
-├── .agent/              # 專案專用自定義配置與 Skill
-├── .gitignore           # Git 忽略配置
-├── AGENTS.md            # 專案規範守則
-└── README.md            # 專案說明文件
-```
+> 💡 **快速檢視**：
+> 🌐 [線上圖卡網頁 (GitHub Pages)](https://wu-kenny-0531.github.io/-/) ｜ 📥 [下載高解析度 A4 PNG 原圖](png/01_agent_based_model.png) ｜ 📝 [閱讀完整主題筆記](notes/01_agent_based_model.md)
 
 ---
 
-## 執行工作流程（分階段確認制）
+## 🖼️ 圖卡成品預覽 (A4 直式)
 
-1. **階段 1：筆記草稿審查 (`notes/*.md`)**
-   - 梳理主題概念，明確劃分「**【核心圖卡區】**（適合放進單頁 A4）」與「**【延伸補充區】**」。
-   - 包含定義、核心要素、LaTeX 數學公式、應用範例。
-   - **由使用者檢查確認後，才進入下一階段**。
+<div align="center">
+  <img src="png/01_agent_based_model.png" alt="Agent-Based Model 教學圖卡" width="85%" style="box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 6px;" />
+</div>
 
-2. **階段 2：單頁 HTML 圖卡生成 (`html/*.html`)**
-   - 採用標準 A4 直式比例，內建 KaTeX 渲染數學公式。
-   - 著重文字嚴謹、排版結構清晰。
+---
 
-3. **階段 3：生動視覺 PNG 輸出 (`png/*.png`)**
-   - 注入生動視覺元素（卡片浮雕、強調配色、圖標微章、公式重點框）。
-   - 高解析度轉檔輸出，適合列印與繳交作業。
+## 專案結構與模組
 
-4. **階段 4：GitHub 同步**
-   - 可直接使用 GitHub Desktop 做 Add Local Repository 並發布/推送。
+* **`notes/`**：主題知識筆記（分流「核心圖卡區」與「延伸補充區」）
+* **`html/`**：單頁 A4 教學圖卡網頁（內建 KaTeX 與 CSS/JS/SVG 解說圖表）
+* **`png/`**：高解析度 300 DPI 印刷級圖卡成品
+* **`scripts/`**：Python 自動轉檔截圖工具 (`generate_png.py`)
+* **`upload.bat`**：雙擊一鍵同步推送到 GitHub
+* **`export_png.bat`**：雙擊一鍵重新生成 PNG 圖卡

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>風格 A：達文西手繪手稿風 - Agent-Based Model</title>
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <!-- Google Fonts: Classical Serif & Handwritten Callout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Caveat:wght@600;700&family=Noto+Serif+TC:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --parchment-light: #faf5eb;
+      --parchment-base: #f4ecdc;
+      --parchment-dark: #e8dcbf;
+      --ink-primary: #23180f;
+      --ink-secondary: #4a3828;
+      --ink-muted: #6b5642;
+      --seal-red: #9e2a2b;
+      --seal-red-light: #b53839;
+      --prussian-blue: #1b3b6f;
+      --antique-gold: #a67c1e;
+      --border-ink: #3b2a1d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a140e;
+      font-family: 'Noto Serif TC', serif;
+      color: var(--ink-primary);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      line-height: 1.45;
+    }
+
+    /* Standard A4 Parchment Page */
+    .a4-page {
+      width: 794px;
+      min-height: 1123px;
+      background: var(--parchment-base);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, rgba(216, 198, 163, 0.35) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 42, 29, 0.015) 3px);
+      padding: 36px 42px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), inset 0 0 80px rgba(110, 80, 45, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      border: 1px solid #c4b08a;
+    }
+
+    /* Classical Hand-Drawn Double Border Frame */
+    .a4-page::before {
+      content: "";
+      position: absolute;
+      top: 14px; left: 14px; right: 14px; bottom: 14px;
+      border: 2px solid var(--border-ink);
+      pointer-events: none;
+    }
+    .a4-page::after {
+      content: "";
+      position: absolute;
+      top: 18px; left: 18px; right: 18px; bottom: 18px;
+      border: 1px dashed rgba(59, 42, 29, 0.45);
+      pointer-events: none;
+    }
+
+    /* Corner Florets */
+    .corner-ornament {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--seal-red);
+      background: var(--parchment-light);
+      z-index: 2;
+    }
+    .tl { top: 12px; left: 12px; }
+    .tr { top: 12px; right: 12px; }
+    .bl { bottom: 12px; left: 12px; }
+    .br { bottom: 12px; right: 12px; }
+
+    /* Top Metadata & Wax Seal Header */
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-ink);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .meta-text {
+      font-size: 11px;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 2px;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .wax-seal {
+      width: 44px;
+      height: 44px;
+      background: var(--seal-red);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.25);
+      border: 2px dashed rgba(255, 255, 255, 0.4);
+      transform: rotate(-4deg);
+    }
+    .wax-seal span { font-size: 13px; font-weight: 900; }
+
+    /* Main Title Block */
+    .title-banner {
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .title-banner h1 {
+      font-family: 'Cinzel', 'Noto Serif TC', serif;
+      font-size: 27px;
+      font-weight: 900;
+      color: var(--ink-primary);
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+      line-height: 1.15;
+    }
+    .title-banner .subtitle {
+      display: block;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--seal-red);
+      letter-spacing: 2px;
+      margin-top: 4px;
+    }
+    .handwritten-intro {
+      font-family: 'Caveat', cursive;
+      font-size: 17px;
+      color: var(--prussian-blue);
+      margin-top: 6px;
+      line-height: 1.35;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Sketch Section Dividers */
+    .manuscript-section-title {
+      font-family: 'Cinzel', 'Noto Serif TC', serif;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-ink);
+      padding-bottom: 3px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .section-num {
+      color: var(--seal-red);
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    /* Section 1: The Triad & Micro Anatomy (2-Columns) */
+    .two-col-sketch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    /* Sketch Cards with Engraved Framing */
+    .sketch-card {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid var(--border-ink);
+      padding: 10px 12px;
+      position: relative;
+    }
+    .sketch-card::before {
+      content: "";
+      position: absolute;
+      top: 2px; left: 2px; right: 2px; bottom: 2px;
+      border: 1px solid rgba(59, 42, 29, 0.2);
+      pointer-events: none;
+    }
+    .triad-item {
+      margin-bottom: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .triad-item:last-child { margin-bottom: 0; }
+    .triad-item strong {
+      color: var(--seal-red);
+      font-family: 'Cinzel', 'Noto Serif TC', serif;
+      font-size: 12.5px;
+    }
+
+    /* Mathematical Parchment Scroll */
+    .math-scroll {
+      background: #faf7f0;
+      border: 1px solid var(--border-ink);
+      border-left: 3px solid var(--prussian-blue);
+      padding: 8px 12px;
+      position: relative;
+    }
+    .math-scroll .katex-display { margin: 4px 0; }
+    .math-scroll .math-caption {
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      font-style: italic;
+      line-height: 1.35;
+      border-top: 1px dashed rgba(59, 42, 29, 0.25);
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+
+    /* Centerpiece: Da Vinci Style Anatomical Emergence Diagram */
+    .center-manuscript-diagram {
+      background: #fbf8f2;
+      border: 1.5px solid var(--border-ink);
+      padding: 10px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .diagram-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      border-bottom: 1px dashed var(--border-ink);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    /* Hand-Drawn Comparison Table */
+    .codex-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-bottom: 14px;
+    }
+    .codex-table th, .codex-table td {
+      border: 1px solid var(--border-ink);
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .codex-table th {
+      background: #ebe0ca;
+      font-family: 'Cinzel', 'Noto Serif TC', serif;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--ink-primary);
+      letter-spacing: 0.5px;
+    }
+    .codex-table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.35); }
+    .codex-table td strong { color: var(--seal-red); }
+
+    /* Three Case Studies in Ancient Manuscript Boxes */
+    .cases-triptych {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .triptych-card {
+      border: 1px solid var(--border-ink);
+      background: rgba(255, 255, 255, 0.5);
+      padding: 8px 10px;
+      position: relative;
+    }
+    .triptych-seal {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      font-weight: 900;
+      color: var(--seal-red);
+      border-bottom: 1px solid var(--seal-red);
+      margin-bottom: 4px;
+    }
+    .triptych-card h5 {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--ink-primary);
+      margin-bottom: 3px;
+    }
+    .triptych-card p {
+      font-size: 11px;
+      color: var(--ink-secondary);
+      line-height: 1.35;
+    }
+
+    /* Footer & Stamp */
+    footer {
+      border-top: 1px solid var(--border-ink);
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      color: var(--ink-muted);
+      letter-spacing: 1px;
+    }
+    .signature {
+      font-family: 'Caveat', cursive;
+      font-size: 16px;
+      color: var(--ink-primary);
+      letter-spacing: 0;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .a4-page { box-shadow: none; border: none; width: 100%; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="a4-page">
+    <!-- Corner Florets -->
+    <div class="corner-ornament tl"></div>
+    <div class="corner-ornament tr"></div>
+    <div class="corner-ornament bl"></div>
+    <div class="corner-ornament br"></div>
+
+    <!-- Header & Wax Seal -->
+    <header class="header-top">
+      <div>
+        <div class="meta-text">TRACTATUS COMPUTATORIUS · CODEX APERITIO</div>
+        <div style="font-size: 10.5px; color: var(--ink-muted); font-style: italic;">
+          微觀行為之微小偏好 · 宏觀秩序之必然湧現
+        </div>
+      </div>
+      <div class="wax-seal">
+        <span>ABM</span>
+        FOLIO I
+      </div>
+    </header>
+
+    <!-- Title Block with Italian/Classical touch -->
+    <div class="title-banner">
+      <h1>AGENT-BASED MODEL (ABM)</h1>
+      <span class="subtitle">【代理人基礎模型 · 達文西手繪手稿考卷】</span>
+      <div class="handwritten-intro">
+        "Natura non praecipit sed ex minimis causis maximos effectus conspirat."<br>
+        大自然從不直接頒布宏觀法令，而是任由無數微型主體於局部中互動，自組織織就大千世界。
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Section 1: The Architectural Triad & Emergence Mathematics -->
+      <div class="two-col-sketch">
+        <!-- Col 1: The Triad -->
+        <div>
+          <div class="manuscript-section-title">
+            <span class="section-num">I.</span> 系統之三大核心骨架 (TRIA FUNDAMENTA)
+          </div>
+          <div class="sketch-card">
+            <div class="triad-item">
+              <strong>1. 自主主體 (Agentes)：</strong>
+              具備記憶、異質屬性、有限理性與決策天性之微型發條機關，僅依據局域視野行事。
+            </div>
+            <div class="triad-item">
+              <strong>2. 拓撲生息地 (Ambitus)：</strong>
+              空間格網 (Grids)、關係網絡 (Networks) 或連續力場，承載主體碰撞與生息。
+            </div>
+            <div class="triad-item">
+              <strong>3. 因果律則 (Regulae)：</strong>
+              鄰域感知、避碰、聚集與自適應演化法則，推動系統時序躍遷。
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: The Math Scroll -->
+        <div>
+          <div class="manuscript-section-title">
+            <span class="section-num">II.</span> 微觀轉移與湧現算子 (CALCULUS)
+          </div>
+          <div class="math-scroll">
+            <div style="font-size:11px; font-weight:bold; color:var(--seal-red);">微觀主體時序演進：</div>
+            $$s_i(t+1) = f\Big(s_i(t), \; \mathcal{N}_i(t), \; E(t)\Big)$$
+            <div style="font-size:11px; font-weight:bold; color:var(--prussian-blue); margin-top:4px;">宏觀全域湧現觀測量：</div>
+            $$M(t) = \mathcal{G}\Big(\{s_i(t)\}_{i=1}^N\Big) \approx \frac{1}{N}\sum_{i=1}^N g(s_i(t))$$
+            <div class="math-caption">
+              註：$\mathcal{N}_i$ 為鄰近幾何鄰域，$M(t)$ 具備不可化約之非線性相變特性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Centerpiece: Da Vinci Style Emergence Anatomy Diagram -->
+      <div class="center-manuscript-diagram">
+        <div class="diagram-header-bar">
+          <span>FIGURA I. 自組織湧現之手繪幾何解剖圖 (ORGANISATIO SPONTANEA)</span>
+          <span style="color:var(--seal-red);">LOCAL RULES ➔ MACRO EMERGENCE</span>
+        </div>
+        <!-- Hand-drawn vector sketch SVG -->
+        <svg width="100%" height="155" viewBox="0 0 710 155" style="background: rgba(255,255,255,0.3); border:1px solid #d4c5a5;">
+          <!-- Definitions for cross-hatch -->
+          <defs>
+            <pattern id="hatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="#4a3828" stroke-width="0.8" opacity="0.3"/>
+            </pattern>
+          </defs>
+
+          <!-- Left Anatomy: Single Agent Structure -->
+          <g transform="translate(15, 8)">
+            <!-- Outer dashed compass circle -->
+            <circle cx="65" cy="65" r="58" fill="url(#hatch)" stroke="#3b2a1d" stroke-width="1.2" stroke-dasharray="3,3"/>
+            <circle cx="65" cy="65" r="50" fill="none" stroke="#a67c1e" stroke-width="0.8"/>
+            <!-- Sensory Cone -->
+            <path d="M 65 65 L 110 35 A 50 50 0 0 1 115 85 Z" fill="rgba(158, 42, 43, 0.15)" stroke="#9e2a2b" stroke-width="1"/>
+            <!-- Agent core gear -->
+            <circle cx="65" cy="65" r="16" fill="#f4ecdc" stroke="#23180f" stroke-width="1.8"/>
+            <circle cx="65" cy="65" r="6" fill="#9e2a2b"/>
+            <!-- Direction pointer -->
+            <line x1="65" y1="65" x2="100" y2="50" stroke="#23180f" stroke-width="2"/>
+            <polygon points="105,48 97,45 99,55" fill="#23180f"/>
+            <!-- Labels -->
+            <text x="65" y="136" font-family="'Cinzel', serif" font-size="9.5" font-weight="bold" fill="#23180f" text-anchor="middle">主體解剖：感知半徑與指向</text>
+            <text x="110" y="28" font-family="'Caveat', cursive" font-size="12" fill="#9e2a2b">感知錐 $\mathcal{N}_i$</text>
+            <text x="30" y="48" font-family="'Caveat', cursive" font-size="12" fill="#1b3b6f">內部狀態 $s_i$</text>
+          </g>
+
+          <!-- Middle: Evolution Arrow & Compass Rose -->
+          <g transform="translate(160, 20)">
+            <!-- Classical pointing compass lines -->
+            <line x1="20" y1="55" x2="150" y2="55" stroke="#3b2a1d" stroke-width="1.5"/>
+            <polygon points="155,55 145,50 145,60" fill="#3b2a1d"/>
+            <circle cx="85" cy="55" r="24" fill="none" stroke="#a67c1e" stroke-width="0.8" stroke-dasharray="2,2"/>
+            <text x="85" y="42" font-family="'Cinzel', serif" font-size="9" font-weight="bold" fill="#9e2a2b" text-anchor="middle">ITERATIO</text>
+            <text x="85" y="75" font-family="'Caveat', cursive" font-size="13" fill="#4a3828" text-anchor="middle">局部迭代：避碰、對齊、聚類</text>
+          </g>
+
+          <!-- Right: Macro Emergence Vortex (Schelling & Boids) -->
+          <g transform="translate(340, 8)">
+            <!-- Emergence Frame -->
+            <rect x="0" y="0" width="345" height="138" fill="none" stroke="#3b2a1d" stroke-width="1.2"/>
+            <rect x="3" y="3" width="339" height="132" fill="none" stroke="#a67c1e" stroke-width="0.6" stroke-dasharray="4,2"/>
+            
+            <!-- Emergent Spiraling Swarm Curves -->
+            <path d="M 20 110 Q 90 20 170 65 T 320 40" fill="none" stroke="#1b3b6f" stroke-width="1.4" stroke-dasharray="2,2"/>
+            <path d="M 30 125 Q 110 35 180 80 T 330 55" fill="none" stroke="#9e2a2b" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <!-- Clustered agents nodes -->
+            <!-- Cluster Alpha (Red Tribe) -->
+            <g transform="translate(70, 75)">
+              <circle cx="0" cy="0" r="18" fill="url(#hatch)" stroke="#9e2a2b" stroke-width="1"/>
+              <circle cx="-6" cy="-4" r="3" fill="#9e2a2b"/>
+              <circle cx="5" cy="-6" r="3" fill="#9e2a2b"/>
+              <circle cx="2" cy="7" r="3" fill="#9e2a2b"/>
+              <circle cx="-7" cy="6" r="3" fill="#9e2a2b"/>
+              <text x="0" y="28" font-family="'Caveat', cursive" font-size="11.5" fill="#9e2a2b" text-anchor="middle">同質聚落 (同化)</text>
+            </g>
+
+            <!-- Cluster Beta (Blue Swarm in formation) -->
+            <g transform="translate(250, 45)">
+              <circle cx="0" cy="0" r="22" fill="none" stroke="#1b3b6f" stroke-width="1.2" stroke-dasharray="3,1"/>
+              <!-- Boid arrows -->
+              <polygon points="0,-12 4,-3 -4,-3" fill="#1b3b6f" transform="rotate(45 0 -12)"/>
+              <polygon points="12,-2 16,7 8,7" fill="#1b3b6f" transform="rotate(45 12 -2)"/>
+              <polygon points="-10,8 -6,17 -14,17" fill="#1b3b6f" transform="rotate(45 -10 8)"/>
+              <polygon points="5,14 9,23 1,23" fill="#1b3b6f" transform="rotate(45 5 14)"/>
+              <text x="0" y="36" font-family="'Caveat', cursive" font-size="11.5" fill="#1b3b6f" text-anchor="middle">協同群飛 (秩序)</text>
+            </g>
+
+            <!-- Caption inside diagram -->
+            <text x="172" y="125" font-family="'Noto Serif TC', serif" font-size="10.5" font-weight="bold" fill="#23180f" text-anchor="middle">
+              宏觀湧現：無中央指揮下，自發結成高度凝聚之群體秩序
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Section 3: Classical Comparison Matrix (Top-Down vs Bottom-Up) -->
+      <div class="manuscript-section-title">
+        <span class="section-num">III.</span> 典範之衡鑑：由上而下 vs 由下而上 (PARADIGMATA)
+      </div>
+      <table class="codex-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">比較維度</th>
+            <th style="width: 40%;">傳統古典模型 (微積分與常微分方程 ODE)</th>
+            <th style="width: 40%;">代理人基礎模型 (Agent-Based Model)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>視角 (Perspectiva)</strong></td>
+            <td><strong>由上而下 (Top-Down)</strong>：直接擬合總體統計方程式。</td>
+            <td><strong>由下而上 (Bottom-Up)</strong>：從微觀互動自發湧現宏觀現象。</td>
+          </tr>
+          <tr>
+            <td><strong>主體性 (Agens)</strong></td>
+            <td><strong>均質假設</strong>：假設代表性個人，消除異質性。</td>
+            <td><strong>高度異質 (Heterogeneous)</strong>：個體性格、財富、偏好各異。</td>
+          </tr>
+          <tr>
+            <td><strong>動態 (Dynamica)</strong></td>
+            <td>線性連續平滑曲線，難以捕捉突變臨界點。</td>
+            <td><strong>非線性相變 (Tipping Points)</strong>，具路徑依賴與突變。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Section 4: Three Historic Triptych Cases -->
+      <div class="manuscript-section-title">
+        <span class="section-num">IV.</span> 歷代三大經典里程碑驗證 (EXEMPLA CLASSICA)
+      </div>
+      <div class="cases-triptych">
+        <div class="triptych-card">
+          <span class="triptych-seal">MONUMENTUM 01</span>
+          <h5>謝林隔離模型 (1971)</h5>
+          <p>微觀個體僅求鄰里有三分之一同族（微弱偏好），宏觀城市卻自發分裂為黑白分明的極端種族隔離。</p>
+        </div>
+        <div class="triptych-card">
+          <span class="triptych-seal" style="color:var(--prussian-blue); border-color:var(--prussian-blue);">MONUMENTUM 02</span>
+          <h5>Boids 鳥群模擬 (1987)</h5>
+          <p>僅依循避碰、對齊、聚合三條幾何向量法則，無須領頭鳥，即可自發湧現壯闊如一體的群飛軌跡。</p>
+        </div>
+        <div class="triptych-card">
+          <span class="triptych-seal" style="color:var(--antique-gold); border-color:var(--antique-gold);">MONUMENTUM 03</span>
+          <h5>拓撲網絡傳播 (SIR)</h5>
+          <p>超越傳統全混態均勻擴散方程，真實捕捉無尺度網絡中的超級傳播者樞紐與臨界拓撲阻斷。</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer with Hand-scratched signature and Seal imprint -->
+    <footer>
+      <div>EX CODICE COMPLEXITATIS · FOLIO PRIMO</div>
+      <div class="signature">Leonardo da Complexitas scripsit</div>
+      <div>A.D. MMXXVI · TYPOGRAPHIA A4</div>
+    </footer>
+  </div>
+
+</body>
+</html>
