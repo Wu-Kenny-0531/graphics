@@ -218,7 +218,11 @@
       </button>
       <button class="tab-btn" id="tab03" onclick="switchCard('03')">
         <span class="tab-tag">Folio III</span>
-        <span>03. 類神經網絡與反向傳播</span>
+        <span>03. 類神經網絡 (A4)</span>
+      </button>
+      <button class="tab-btn" id="tab03sq" onclick="switchCard('03sq')">
+        <span class="tab-tag" style="background:#059669;">1:1 Social</span>
+        <span>03. 類神經 (社群方圖)</span>
       </button>
     </div>
 
@@ -262,9 +266,16 @@
         pngUrl: 'png/02_reinforcement_learning.png'
       },
       '03': {
-        title: '當前檢視：Folio III · 03. Neural Networks & Backpropagation (類神經網絡與反向傳播)',
+        title: '當前檢視：Folio III · 03. Neural Networks & Backpropagation (A4 教學圖卡)',
         htmlUrl: 'html/03_neural_networks_davinci.html',
-        pngUrl: 'png/03_neural_networks.png'
+        pngUrl: 'png/03_neural_networks.png',
+        aspect: 'a4'
+      },
+      '03sq': {
+        title: '當前檢視：Social Folio · 03. Neural Networks & Backpropagation (1:1 正方形社群圖卡)',
+        htmlUrl: 'html/03_neural_networks_square.html',
+        pngUrl: 'png/03_neural_networks_square.png',
+        aspect: 'square'
       }
     };
 
@@ -276,9 +287,15 @@
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('tab' + id).classList.add('active');
 
-      // 漸變切換 iframe 內容
+      // 漸變切換 iframe 內容與高度調整
       const frame = document.getElementById('cardFrame');
       frame.style.opacity = '0.4';
+      if (card.aspect === 'square') {
+        frame.style.height = '840px';
+      } else {
+        frame.style.height = '1160px';
+      }
+
       setTimeout(() => {
         frame.src = card.htmlUrl;
         frame.onload = () => { frame.style.opacity = '1'; };

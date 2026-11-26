@@ -17,10 +17,11 @@
 <br>
 
 ### 03. Neural Networks & Backpropagation (類神經網絡與反向傳播)
-> 📥 [下載高解析度 A4 PNG 原圖](png/03_neural_networks.png) ｜ 🌐 [查看網頁版](html/03_neural_networks_davinci.html) ｜ 📝 [閱讀主題筆記](notes/03_neural_networks.md)
+> 📥 [下載高解析度 A4 PNG 原圖](png/03_neural_networks.png) ｜ 📥 [下載 1:1 社群方圖 (1600x1600)](png/03_neural_networks_square.png) ｜ 🌐 [查看網頁版](html/03_neural_networks_davinci.html) ｜ 📝 [閱讀主題筆記](notes/03_neural_networks.md)
 
 <div align="center">
   <img src="png/03_neural_networks.png" alt="Neural Networks & Backpropagation 達文西手繪手札圖卡" width="85%" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 6px;" />
+  <p style="margin-top: 10px; font-size: 13px; color: #94a3b8;">📱 同步推出 1:1 正方形社群版：<a href="png/03_neural_networks_square.png" target="_blank">檢視 1:1 社群高清圖</a></p>
 </div>
 
 <br>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>類神經網絡與反向傳播 (社群方形 1:1 圖卡) - Neural Networks & Backprop</title>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Google Fonts: Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face {
+      font-family: 'JasonHandwriting5';
+      src: url('../assets/fonts/JasonHandwriting5.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --parchment-light: #faf4e6;
+      --parchment-base: #f0e4cb;
+      --parchment-dark: #dfceaa;
+      --ink-primary: #1e1309;
+      --ink-secondary: #362415;
+      --ink-muted: #5c4531;
+      --seal-red: #8f2223;
+      --prussian-blue: #15325b;
+      --antique-gold: #8a6310;
+      --border-ink: #322114;
+      --font-handwriting: 'Caveat', 'JasonHandwriting5', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #120d08;
+      font-family: var(--font-handwriting);
+      color: var(--ink-primary);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 正方形 1:1 社群專用畫布 (800px × 800px) */
+    .square-card {
+      width: 800px;
+      height: 800px;
+      background: var(--parchment-base);
+      background-image: 
+        radial-gradient(circle at 50% 40%, rgba(255, 252, 245, 0.9) 0%, rgba(240, 228, 203, 0.75) 50%, rgba(195, 155, 100, 0.6) 88%, rgba(74, 47, 19, 0.85) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(50, 33, 20, 0.02) 3px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(50, 33, 20, 0.012) 4px);
+      padding: 30px 34px 22px 34px;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 50px rgba(110, 75, 35, 0.5),
+        inset 0 0 110px rgba(55, 30, 10, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      border: 1.5px solid #9e7c4f;
+      overflow: hidden;
+    }
+
+    /* 水彩漬洗層 */
+    .parchment-wash-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: 
+        radial-gradient(circle at 15% 18%, rgba(184, 134, 11, 0.1) 0%, transparent 32%),
+        radial-gradient(circle at 85% 25%, rgba(139, 69, 19, 0.09) 0%, transparent 28%),
+        radial-gradient(circle at 30% 75%, rgba(160, 82, 45, 0.08) 0%, transparent 35%),
+        radial-gradient(circle at 75% 82%, rgba(184, 134, 11, 0.1) 0%, transparent 30%);
+      mix-blend-mode: multiply;
+    }
+
+    /* 雙線古典外框 */
+    .square-card::before {
+      content: "";
+      position: absolute;
+      top: 13px; left: 13px; right: 13px; bottom: 13px;
+      border: 2px solid var(--border-ink);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .square-card::after {
+      content: "";
+      position: absolute;
+      top: 17px; left: 17px; right: 17px; bottom: 17px;
+      border: 1px dashed rgba(50, 33, 20, 0.5);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .corner-ornament {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--seal-red);
+      background: var(--parchment-light);
+      z-index: 3;
+    }
+    .tl { top: 11px; left: 11px; }
+    .tr { top: 11px; right: 11px; }
+    .bl { bottom: 11px; left: 11px; }
+    .br { bottom: 11px; right: 11px; }
+
+    /* 頂部題頭 */
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-ink);
+      padding-bottom: 5px;
+      position: relative;
+      z-index: 4;
+    }
+    .meta-text {
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      color: var(--ink-secondary);
+      font-weight: 700;
+    }
+    .wax-seal {
+      width: 44px;
+      height: 44px;
+      background: var(--seal-red);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.25);
+      border: 2px dashed rgba(255, 255, 255, 0.45);
+      transform: rotate(-5deg);
+    }
+    .wax-seal span { font-size: 15px; line-height: 1; }
+
+    /* 主標題區 */
+    .title-banner {
+      text-align: center;
+      margin: 8px 0 10px 0;
+      position: relative;
+      z-index: 4;
+    }
+    .title-banner h1 {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+    .title-banner .subtitle {
+      display: block;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--seal-red);
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+    }
+    .handwritten-motto {
+      font-size: 15.5px;
+      color: var(--prussian-blue);
+      margin-top: 3px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    /* 正方形中央巨型視覺圖 (Focus Illustration) */
+    .center-focus-diagram {
+      background: #f9f2e3;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 70%),
+        radial-gradient(circle at 15% 85%, rgba(184, 134, 11, 0.08) 0%, transparent 40%);
+      border: 1.8px solid var(--border-ink);
+      border-radius: 245px 20px 255px 18px/18px 250px 16px 245px;
+      padding: 10px 14px;
+      position: relative;
+      box-shadow: 2px 3px 7px rgba(74, 47, 19, 0.1), inset 0 0 25px rgba(110, 75, 35, 0.15);
+      z-index: 4;
+      margin-bottom: 10px;
+    }
+    .diagram-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      border-bottom: 1.5px dashed rgba(50, 33, 20, 0.4);
+      padding-bottom: 3px;
+      margin-bottom: 6px;
+    }
+
+    /* 正方形雙核心卡片 (公式與三大金句) */
+    .square-bottom-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      z-index: 4;
+      margin-bottom: 8px;
+    }
+
+    .math-scroll {
+      background: #f7eedb;
+      background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 60%);
+      border: 1.5px solid var(--border-ink);
+      border-left: 4.5px solid var(--prussian-blue);
+      border-radius: 250px 18px 230px 15px/15px 235px 18px 245px;
+      padding: 8px 12px;
+      box-shadow: 2px 3px 6px rgba(74, 47, 19, 0.12), inset 0 0 20px rgba(160, 110, 50, 0.12);
+    }
+    .math-scroll .katex-display { margin: 2px 0; }
+
+    .insights-card {
+      background: rgba(253, 248, 237, 0.75);
+      border: 1.5px solid var(--border-ink);
+      border-radius: 235px 16px 245px 14px/14px 240px 18px 235px;
+      padding: 8px 12px;
+      box-shadow: 1px 2px 4px rgba(74, 47, 19, 0.08);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    .insight-bullet {
+      margin-bottom: 5px;
+    }
+    .insight-bullet:last-child { margin-bottom: 0; }
+    .insight-bullet strong {
+      color: var(--seal-red);
+      font-weight: 700;
+    }
+
+    /* 頁尾 */
+    footer {
+      border-top: 1px solid var(--border-ink);
+      padding-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      z-index: 4;
+    }
+    .signature {
+      font-family: 'Caveat', cursive;
+      font-size: 19px;
+      color: var(--ink-primary);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="square-card">
+    <div class="parchment-wash-layer"></div>
+    <div class="corner-ornament tl"></div>
+    <div class="corner-ornament tr"></div>
+    <div class="corner-ornament bl"></div>
+    <div class="corner-ornament br"></div>
+
+    <!-- 頂部資訊區 -->
+    <header class="header-top">
+      <div>
+        <div class="meta-text">Tractatus de Nexu Nervorum · 1:1 Social Folio</div>
+        <div style="font-size: 13.5px; color: var(--ink-muted);">
+          前向推論織就心智 · 梯度逆流悟得真理
+        </div>
+      </div>
+      <div class="wax-seal">
+        <span>NN</span>
+        1:1
+      </div>
+    </header>
+
+    <!-- 主標題區 -->
+    <div class="title-banner">
+      <h1>Neural Networks & Backpropagation</h1>
+      <span class="subtitle">【類神經網絡與反向傳播】</span>
+      <div class="handwritten-motto">
+        "Sicut arbor per ramos sucum transmittit, ita mens per gradus erroris contexit."
+      </div>
+    </div>
+
+    <!-- 中央核心視覺：提花織布梭機式突觸網與梯度逆流大圖 -->
+    <div class="center-focus-diagram">
+      <div class="diagram-caption">
+        <span>Figura. 提花織布機式神經突觸與梯度逆流雙向解剖圖</span>
+        <span style="color:var(--seal-red);">前向推論 (Forward $\to$) ⇄ 反向傳導 (Backward $\leftarrow$)</span>
+      </div>
+
+      <svg width="100%" height="240" viewBox="0 0 710 240" style="background: rgba(255,255,255,0.35); border:1px solid #d4c5a5;">
+        <defs>
+          <pattern id="sq-hatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#4a3828" stroke-width="0.8" opacity="0.3"/>
+          </pattern>
+        </defs>
+
+        <!-- 左側：單神經元細胞盤解剖 -->
+        <g transform="translate(25, 25)">
+          <path d="M 15 50 Q 50 70 85 90" fill="none" stroke="#15325b" stroke-width="1.4"/>
+          <path d="M 15 90 L 85 90" fill="none" stroke="#15325b" stroke-width="1.4"/>
+          <path d="M 15 130 Q 50 110 85 90" fill="none" stroke="#15325b" stroke-width="1.4"/>
+          <circle cx="20" cy="54" r="3.5" fill="#15325b"/>
+          <circle cx="20" cy="90" r="3.5" fill="#15325b"/>
+          <circle cx="20" cy="126" r="3.5" fill="#15325b"/>
+
+          <circle cx="85" cy="90" r="68" fill="url(#sq-hatch)" stroke="#3b2a1d" stroke-width="1.2" stroke-dasharray="3,3"/>
+          <circle cx="85" cy="90" r="28" fill="#f0e4cb" stroke="#1e1309" stroke-width="2"/>
+          <circle cx="85" cy="90" r="9" fill="#8f2223"/>
+
+          <!-- 軸突輸出向量指針 -->
+          <line x1="85" y1="90" x2="145" y2="90" stroke="#1e1309" stroke-width="2.4"/>
+          <polygon points="152,90 142,85 142,95" fill="#1e1309"/>
+
+          <text x="85" y="180" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="15" font-weight="700" fill="#1e1309" text-anchor="middle">單神經元：激活放電閥 σ(z)</text>
+          <text x="18" y="38" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14" font-weight="700" fill="#15325b">樹突輸入 Σ w_i x_i</text>
+        </g>
+
+        <!-- 中間：多層提花織布梭機式突觸網 (Loom Architecture) -->
+        <g transform="translate(230, 25)">
+          <!-- 輸入層 -->
+          <g transform="translate(30, 15)">
+            <circle cx="0" cy="30" r="9" fill="#dfceaa" stroke="#1e1309" stroke-width="1.5"/>
+            <circle cx="0" cy="75" r="9" fill="#dfceaa" stroke="#1e1309" stroke-width="1.5"/>
+            <circle cx="0" cy="120" r="9" fill="#dfceaa" stroke="#1e1309" stroke-width="1.5"/>
+          </g>
+          <!-- 隱藏層 -->
+          <g transform="translate(115, 0)">
+            <circle cx="0" cy="20" r="10" fill="#f0e4cb" stroke="#15325b" stroke-width="1.8"/>
+            <circle cx="0" cy="60" r="10" fill="#f0e4cb" stroke="#15325b" stroke-width="1.8"/>
+            <circle cx="0" cy="100" r="10" fill="#f0e4cb" stroke="#15325b" stroke-width="1.8"/>
+            <circle cx="0" cy="140" r="10" fill="#f0e4cb" stroke="#15325b" stroke-width="1.8"/>
+          </g>
+          <!-- 輸出層 -->
+          <g transform="translate(200, 25)">
+            <circle cx="0" cy="40" r="9" fill="#e2d2b4" stroke="#8f2223" stroke-width="1.6"/>
+            <circle cx="0" cy="95" r="9" fill="#e2d2b4" stroke="#8f2223" stroke-width="1.6"/>
+          </g>
+
+          <!-- 突觸經緯線網 -->
+          <path d="M 30 45 L 115 20 M 30 45 L 115 60 M 30 45 L 115 100 M 30 45 L 115 140
+                   M 30 90 L 115 20 M 30 90 L 115 60 M 30 90 L 115 100 M 30 90 L 115 140
+                   M 30 135 L 115 20 M 30 135 L 115 60 M 30 135 L 115 100 M 30 135 L 115 140
+                   M 115 20 L 200 65 M 115 60 L 200 65 M 115 100 L 200 65 M 115 140 L 200 65
+                   M 115 20 L 200 120 M 115 60 L 200 120 M 115 100 L 200 120 M 115 140 L 200 120"
+                stroke="#5c4531" stroke-width="1" opacity="0.45"/>
+
+          <!-- 前饋推論光束 (藍) -->
+          <path d="M 45 10 Q 115 -5 185 10" fill="none" stroke="#15325b" stroke-width="2" stroke-dasharray="3,3"/>
+          <polygon points="192,12 181,7 183,17" fill="#15325b"/>
+          <text x="115" y="-6" font-family="'Caveat', cursive" font-size="14" font-weight="700" fill="#15325b" text-anchor="middle">Forward 推論光束 →</text>
+
+          <!-- 梯度逆流 (紅) -->
+          <path d="M 185 160 Q 115 175 45 160" fill="none" stroke="#8f2223" stroke-width="2.2"/>
+          <polygon points="38,158 49,153 47,163" fill="#8f2223"/>
+          <text x="115" y="180" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14" font-weight="700" fill="#8f2223" text-anchor="middle">← Backward 誤差逆流 ∂L/∂W</text>
+        </g>
+
+        <!-- 右側：損失曲面等高線與最速下降 -->
+        <g transform="translate(500, 25)">
+          <ellipse cx="105" cy="85" rx="80" ry="42" fill="none" stroke="#362415" stroke-width="0.8" opacity="0.35"/>
+          <ellipse cx="105" cy="85" rx="56" ry="28" fill="none" stroke="#362415" stroke-width="0.9" opacity="0.5"/>
+          <ellipse cx="105" cy="85" rx="34" ry="16" fill="none" stroke="#362415" stroke-width="1.1" opacity="0.7"/>
+          <circle cx="105" cy="85" r="5" fill="url(#sq-hatch)" stroke="#8f2223" stroke-width="1.2"/>
+          
+          <!-- 下降軌跡 -->
+          <path d="M 25 35 Q 60 55 75 45 T 102 83" fill="none" stroke="#8f2223" stroke-width="2.2"/>
+          <polygon points="105,85 96,80 98,89" fill="#8f2223"/>
+
+          <text x="105" y="118" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14" font-weight="700" fill="#8f2223" text-anchor="middle">全域至善極小值 L_min</text>
+          <text x="105" y="180" font-family="'Caveat', 'JasonHandwriting5', cursive" font-size="14.5" font-weight="700" fill="#1e1309" text-anchor="middle">損失地形最速下降</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- 底部雙欄精華：微積分算子卷軸 + 核心金句 -->
+    <div class="square-bottom-grid">
+      <!-- 數學卷軸 -->
+      <div class="math-scroll">
+        <div style="font-size:14px; font-weight:700; color:var(--seal-red);">鏈鎖律梯度逆流 (Chain Rule)：</div>
+        $$\delta^{(l)} = \left( (\mathbf{W}^{(l+1)})^T \delta^{(l+1)} \right) \odot \sigma'(\mathbf{z}^{(l)})$$
+        $$\mathbf{W}^{(l)} \leftarrow \mathbf{W}^{(l)} - \eta \, \delta^{(l)} (\mathbf{a}^{(l-1)})^T$$
+      </div>
+
+      <!-- 三大核心觀念金句卡片 -->
+      <div class="insights-card">
+        <div class="insight-bullet">
+          <strong>1. 連續幾何映射：</strong>網絡非死板代碼，而是將高維空間扭曲摺疊為分類流形。
+        </div>
+        <div class="insight-bullet">
+          <strong>2. 鏈鎖反向傳播：</strong>自最終誤差起，向後層層推演撥動每一枚突觸齒輪。
+        </div>
+        <div class="insight-bullet">
+          <strong>3. 湧現通用擬合：</strong>微小權重協同，自數據中自發湧現出對混沌世界之直覺。
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer>
+      <div>Tractatus III: De Nexu Nervorum · NN-Square-03</div>
+      <div class="signature">Catenula & Machina scripsit</div>
+      <div>Anno Domini 2026 · Typographia 1:1</div>
+    </footer>
+  </div>
+
+</body>
+</html>
