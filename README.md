@@ -21,3 +21,5 @@
 * **`scripts/`**：Python 自動轉檔截圖工具 (`generate_png.py`)
 * **`upload.bat`**：雙擊一鍵同步推送到 GitHub
 * **`export_png.bat`**：雙擊一鍵重新生成 PNG 圖卡
+* **[`STYLE_GUIDE.md`](STYLE_GUIDE.md)**：專屬視覺設計指南（色調、筆觸、角色、構圖四大維度）
+* **[`AGENTS.md`](AGENTS.md)**：Agent 協作與分階段確認制守則
