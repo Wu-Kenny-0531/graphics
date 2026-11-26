@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 echo ==================================================
-echo   圖卡生成專案 - 一鍵同步到 GitHub
+echo   graphics 教學圖卡專案 - 一鍵同步到 GitHub
 echo ==================================================
 
 set "GIT_EXE=C:\Users\User\AppData\Local\GitHubDesktop\app-3.6.11\resources\app\git\cmd\git.exe"

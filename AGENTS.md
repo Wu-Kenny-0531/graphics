@@ -51,10 +51,10 @@
 
 ## 3. 目錄結構約定 (Directory Conventions)
 
-專案路徑：`C:\Users\User\Desktop\Antigravity_Project\圖卡生成專案\`
+專案路徑：`C:\Users\User\Desktop\Antigravity_Project\graphics\`
 
 ```text
-圖卡生成專案/
+graphics/
 ├── notes/                   # 階段 1：主題筆記草稿 (Markdown, 含核心區與補充區)
 │   └── 01_agent_based_model.md
 ├── html/                    # 階段 2：單頁 A4 教學圖卡 (HTML + CSS + JS + KaTeX)
