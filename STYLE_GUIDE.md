@@ -64,6 +64,10 @@
    * 局部互動以古典虛線向量牽引線表示。
    * 宏觀聚集時，個體自發排列出「漩渦 (Vortex)」、「同心球體 (Clusters)」或「鳥群流線 (Streamlines)」。
 
+3. **古典手繪專屬角色與微型插圖 (Thematic Vignettes & Figures)**：
+   * **達文西發條機械飛鳥 (Mechanical Ornithopter Bird)**：於 Boids 鳥群模擬案例中，特別繪製微型木質連桿翼骨、主軸轉向鉸鏈與普魯士藍墨水勾邊之機械飛鳥素描，致敬達文西著名飛行器手稿，將抽象向量運動具象化為古典機關之群飛。
+   * **發條同心齒輪主體 (Clockwork Automaton Core)**：中央解剖圖中配有同心軸承、內部狀態鉚釘與局域感知錐。
+
 ---
 
 ## 四、 構圖與版面流向規範 (Composition & Layout Flow)
