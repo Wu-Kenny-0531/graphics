@@ -16,6 +16,15 @@
 
 <br>
 
+### 03. Neural Networks & Backpropagation (類神經網絡與反向傳播)
+> 📥 [下載高解析度 A4 PNG 原圖](png/03_neural_networks.png) ｜ 🌐 [查看網頁版](html/03_neural_networks_davinci.html) ｜ 📝 [閱讀主題筆記](notes/03_neural_networks.md)
+
+<div align="center">
+  <img src="png/03_neural_networks.png" alt="Neural Networks & Backpropagation 達文西手繪手札圖卡" width="85%" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 6px;" />
+</div>
+
+<br>
+
 ### 02. Reinforcement Learning & MDP (強化學習與馬可夫決策過程)
 > 📥 [下載高解析度 A4 PNG 原圖](png/02_reinforcement_learning.png) ｜ 🌐 [查看網頁版](html/02_reinforcement_learning_davinci.html) ｜ 📝 [閱讀主題筆記](notes/02_reinforcement_learning.md)
 

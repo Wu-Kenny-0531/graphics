@@ -48,7 +48,12 @@
 * **英文、數字與簽名**：`Caveat`（Google Fonts, 600/700），具備文藝復興學者流暢鋼筆草寫風。
 * **數學公式**：KaTeX 引擎渲染，融入深褐墨水色。
 
-### ⑤ 頁尾動態題註規範 (Dynamic Thematic Footers)
+### ⑤ 標題與題頭禁語規則 (Strict Title Conventions)
+* 🚫 **嚴格禁止出現任何「達文西手繪手札卷X」、「手稿考卷」等說明文字**。
+  - 頂部左側題頭：僅保留乾淨純粹的拉丁名（如 `Tractatus de Nexu Nervorum`）。
+  - 主標題副標：僅標記中文主題名稱本體（如 `【類神經網絡與反向傳播】`），絕不贅加後綴。
+
+### ⑥ 頁尾動態題註規範 (Dynamic Thematic Footers)
 頁尾文字嚴禁死板固定，必須隨主題領域與卷號動態演進，結構為三欄古典式：
 * **左欄（論著名稱與代碼）**：`Tractatus [卷號]: De [主題拉丁名] · [領域代碼-序號]`
   - 例：`Tractatus I: De Systematibus Agentium · ABM-01`

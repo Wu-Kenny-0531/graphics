@@ -33,7 +33,9 @@ description: >-
 4. **100% 全手寫字型排印 (Typography)**：
    - 中文全域強制採用本地 TTF **清松手寫體第五代（大五體, `assets/fonts/JasonHandwriting5.ttf`）**，厚實飽滿、筆跡感極強。
    - 英文與簽名採用 **Caveat**，數學公式採用深褐墨水 KaTeX。
-5. **主題專屬動態頁尾 (Dynamic Thematic Footers)**：
+5. **純粹題頭與主標規範 (Title Cleanliness Rule)**：
+   - 🚫 **嚴格禁止出現任何「達文西手繪手札卷X」、「手稿考卷」等說明文字**。頂部左側題頭僅保留拉丁名（如 `Tractatus de Nexu Nervorum`），副標題僅保留中文名稱（如 `【類神經網絡與反向傳播】`）。
+6. **主題專屬動態頁尾 (Dynamic Thematic Footers)**：
    - 結構：`Tractatus [卷號]: De [主題拉丁名] · [領域代碼-序號]` ── `[草寫簽名] scripsit` ── `Anno Domini 2026 · Typographia A4`。
 
 ---
