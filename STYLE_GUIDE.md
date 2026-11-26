@@ -85,12 +85,13 @@
 
 | 用途層級 | 字型族系 (Font Family) | 來源 / 格式 | 樣式特色 |
 | :--- | :--- | :--- | :--- |
-| **中文全域字體 (首選)** | `JasonHandwriting1` / `JasonHandwriting3` (清松手寫體) | 本地 TTF (`assets/fonts/`) | 圓潤自如、手寫辨識度極高，筆畫具備真實筆觸的連貫感與呼吸感 |
+| **中文全域字體 (當前首選)** | `JasonHandwriting9` (清松手寫體第九代·文青風) | 本地 TTF (`assets/fonts/`) | 帶有優雅細膩的文青質感，筆畫流暢勻稱，具備沉靜的手札學者筆跡感 |
+| **中文備選** | `JasonHandwriting1` / `JasonHandwriting3` | 本地 TTF (`assets/fonts/`) | 第一代圓潤自然、第三代個性鮮明 |
 | **備援中文字體** | `Long Cang` (龍藏體) | Google Fonts | 灑脫流暢的行書風格草札 |
 | **英文 / 數字 / 符號** | `Caveat` | Google Fonts | 流暢靈動的古典鋼筆草寫風格，自帶學者手札呼吸感 |
-| **圖解 SVG 標籤** | `'Caveat', 'JasonHandwriting1', cursive` | 本地與 Web 字型 | 向量圖解內部所有註釋同步採用清松手寫體 |
+| **圖解 SVG 標籤** | `'Caveat', 'JasonHandwriting9', cursive` | 本地與 Web 字型 | 向量圖解內部所有註釋同步採用清松手寫體第九代 |
 | **數學公式** | **KaTeX Engine** | CDN 渲染 | 與深褐墨水色融合，融入古典紙質邊框 |
-| **全域 CSS 宣告** | `font-family: 'Caveat', 'JasonHandwriting1', 'JasonHandwriting3', 'Long Cang', cursive;` | - | 本地字體優先載入，零外部依賴、保證離線與無頭渲染 100% 穩定 |
+| **全域 CSS 宣告** | `font-family: 'Caveat', 'JasonHandwriting9', 'JasonHandwriting1', 'Long Cang', cursive;` | - | 本地字體優先載入，零外部依賴、保證離線與無頭渲染 100% 穩定 |
 
 ---
 
