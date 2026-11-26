@@ -3,54 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent-Based Model (ABM) - 單頁教學圖卡展示</title>
+  <title>知識圖卡典藏檢視器 (Da Vinci Codex Infographics Viewer)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #141c2e;
+      --border-color: #27354f;
+      --accent-blue: #38bdf8;
+      --accent-gold: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: #0f172a;
-      color: #f8fafc;
+      background: var(--bg-dark);
+      color: var(--text-main);
       font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    /* Top Toolbar */
+
+    /* Top Navigation Toolbar */
     .toolbar {
       width: 100%;
-      background: #1e293b;
-      border-bottom: 1px solid #334155;
-      padding: 12px 24px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 15px;
-      color: #38bdf8;
-    }
-    .badge {
-      font-size: 11px;
-      background: #0284c7;
-      color: #ffffff;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    .actions {
-      display: flex;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      flex-wrap: wrap;
       gap: 12px;
     }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-total {
+      font-size: 11px;
+      background: #0369a1;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* Card Switcher Tabs */
+    .switcher-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #0b1120;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+    }
+
+    .tab-tag {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Action Buttons */
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -62,59 +134,144 @@
       text-decoration: none;
       transition: all 0.2s;
     }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
     .btn-primary {
       background: #0284c7;
       color: #ffffff;
     }
+
     .btn-primary:hover { background: #0369a1; }
-    .btn-secondary {
-      background: #334155;
-      color: #cbd5e1;
-    }
-    .btn-secondary:hover { background: #475569; color: #ffffff; }
 
     /* Main Viewer Container */
     .viewer {
       padding: 30px 10px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       width: 100%;
     }
+
+    .card-meta-bar {
+      width: 820px;
+      max-width: 95vw;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
     .card-frame {
       width: 820px;
+      max-width: 95vw;
       height: 1160px;
       border: none;
       border-radius: 8px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.4);
-      background: #ffffff;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      background: #f0e4cb;
+      transition: opacity 0.2s ease;
+    }
+
+    @media (max-width: 860px) {
+      .toolbar { justify-content: center; }
+      .actions { width: 100%; justify-content: center; }
+      .card-frame { height: 950px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Toolbar -->
-  <div class="toolbar">
-    <div class="brand">
-      <span>Agent-Based Model (ABM)</span>
-      <span class="badge">A4 教學圖卡</span>
+  <!-- Top Navigation Toolbar with Switcher -->
+  <header class="toolbar">
+    <div class="brand-section">
+      <div class="brand-logo">
+        <span>📜 達文西手繪手札圖卡典藏</span>
+      </div>
+      <span class="badge-total">共 2 張圖卡</span>
     </div>
+
+    <!-- 切換按鈕群組 (Card Switcher) -->
+    <div class="switcher-container">
+      <button class="tab-btn active" id="tab01" onclick="switchCard('01')">
+        <span class="tab-tag">Folio I</span>
+        <span>01. 代理人模型 (ABM)</span>
+      </button>
+      <button class="tab-btn" id="tab02" onclick="switchCard('02')">
+        <span class="tab-tag">Folio II</span>
+        <span>02. 強化學習與 MDP</span>
+      </button>
+    </div>
+
     <div class="actions">
-      <a class="btn btn-secondary" href="png/01_agent_based_model.png" target="_blank" download>
-        📥 下載高解析度 PNG
+      <a class="btn btn-secondary" id="btnDownload" href="png/01_agent_based_model.png" target="_blank" download>
+        📥 下載本頁高清 PNG
       </a>
-      <a class="btn btn-secondary" href="html/01_agent_based_model_davinci.html" target="_blank">
-        🔗 新分頁開啟網頁版
+      <a class="btn btn-secondary" id="btnOpenHtml" href="html/01_agent_based_model_davinci.html" target="_blank">
+        🔗 新分頁檢視
       </a>
       <a class="btn btn-primary" href="https://github.com/Wu-Kenny-0531/-" target="_blank">
-        📂 查看 GitHub 儲存庫
+        📂 GitHub
       </a>
     </div>
-  </div>
+  </header>
 
-  <!-- Main Viewer showing the actual card -->
+  <!-- Main Viewer showing the active card -->
   <main class="viewer">
+    <div class="card-meta-bar">
+      <span id="cardMetaTitle">當前檢視：Folio I · Agent-Based Model (ABM)</span>
+      <span>A4 單頁比例 · 1588 × 2246 像素</span>
+    </div>
     <iframe class="card-frame" id="cardFrame" src="html/01_agent_based_model_davinci.html"></iframe>
   </main>
+
+  <script>
+    const CARDS = {
+      '01': {
+        title: '當前檢視：Folio I · 01. Agent-Based Model (ABM)',
+        htmlUrl: 'html/01_agent_based_model_davinci.html',
+        pngUrl: 'png/01_agent_based_model.png'
+      },
+      '02': {
+        title: '當前檢視：Folio II · 02. Reinforcement Learning & MDP (強化學習)',
+        htmlUrl: 'html/02_reinforcement_learning_davinci.html',
+        pngUrl: 'png/02_reinforcement_learning.png'
+      }
+    };
+
+    function switchCard(id) {
+      const card = CARDS[id];
+      if (!card) return;
+
+      // 更新頁籤外觀
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab' + id).classList.add('active');
+
+      // 漸變切換 iframe 內容
+      const frame = document.getElementById('cardFrame');
+      frame.style.opacity = '0.4';
+      setTimeout(() => {
+        frame.src = card.htmlUrl;
+        frame.onload = () => { frame.style.opacity = '1'; };
+      }, 150);
+
+      // 更新下載與新分頁連結
+      document.getElementById('btnDownload').href = card.pngUrl;
+      document.getElementById('btnOpenHtml').href = card.htmlUrl;
+      document.getElementById('cardMetaTitle').innerText = card.title;
+    }
+  </script>
 
 </body>
 </html>
