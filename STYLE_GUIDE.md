@@ -81,15 +81,16 @@
 
 ## 五、 字型排印體系 (100% 全手寫規範)
 
-本專案現已全面升級為 **「100% 全手寫手札體系」**，頁面上從大標題、內文、表格數據、SVG 解說圖文字到頁尾簽名，全部採用手寫筆觸字型：
+本專案現已全面升級為 **「100% 全手寫手札體系」**，採用開源優質手寫字體 **「清松手寫體 (JasonHandwriting)」** 本地嵌入，頁面上從大標題、內文、表格數據、SVG 解說圖文字到頁尾簽名，全部採用手寫筆觸：
 
-| 用途層級 | 字型族系 (Font Family) | 字重 | 樣式特色 |
+| 用途層級 | 字型族系 (Font Family) | 來源 / 格式 | 樣式特色 |
 | :--- | :--- | :--- | :--- |
-| **中文全域字體** | `Long Cang` (龍藏體, Google Fonts) | Regular | 自由灑脫的手寫鋼筆草記體，連筆自然，具備強烈的學者私密手札感 |
-| **英文 / 數字 / 符號** | `Caveat` (Google Fonts) | 600 / 700 | 流暢靈動的古典鋼筆草寫風格，自帶學者手札呼吸感 |
-| **圖解 SVG 標籤** | `'Caveat', 'Long Cang'` | Regular | 向量圖解內部所有註釋同步採用龍藏體手寫化 |
-| **數學公式** | **KaTeX Engine** | Regular | 與深褐墨水色融合，融入古典紙質邊框 |
-| **全域 CSS 宣告** | `font-family: 'Caveat', 'Long Cang', cursive;` | - | 確保整頁無任何死板印刷字型，達成純粹真實手稿感 |
+| **中文全域字體 (首選)** | `JasonHandwriting1` / `JasonHandwriting3` (清松手寫體) | 本地 TTF (`assets/fonts/`) | 圓潤自如、手寫辨識度極高，筆畫具備真實筆觸的連貫感與呼吸感 |
+| **備援中文字體** | `Long Cang` (龍藏體) | Google Fonts | 灑脫流暢的行書風格草札 |
+| **英文 / 數字 / 符號** | `Caveat` | Google Fonts | 流暢靈動的古典鋼筆草寫風格，自帶學者手札呼吸感 |
+| **圖解 SVG 標籤** | `'Caveat', 'JasonHandwriting1', cursive` | 本地與 Web 字型 | 向量圖解內部所有註釋同步採用清松手寫體 |
+| **數學公式** | **KaTeX Engine** | CDN 渲染 | 與深褐墨水色融合，融入古典紙質邊框 |
+| **全域 CSS 宣告** | `font-family: 'Caveat', 'JasonHandwriting1', 'JasonHandwriting3', 'Long Cang', cursive;` | - | 本地字體優先載入，零外部依賴、保證離線與無頭渲染 100% 穩定 |
 
 ---
 
