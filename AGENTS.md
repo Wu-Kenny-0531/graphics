@@ -48,6 +48,16 @@
 * **英文、數字與簽名**：`Caveat`（Google Fonts, 600/700），具備文藝復興學者流暢鋼筆草寫風。
 * **數學公式**：KaTeX 引擎渲染，融入深褐墨水色。
 
+### ⑤ 頁尾動態題註規範 (Dynamic Thematic Footers)
+頁尾文字嚴禁死板固定，必須隨主題領域與卷號動態演進，結構為三欄古典式：
+* **左欄（論著名稱與代碼）**：`Tractatus [卷號]: De [主題拉丁名] · [領域代碼-序號]`
+  - 例：`Tractatus I: De Systematibus Agentium · ABM-01`
+  - 例：`Tractatus II: De Ratione Discendi · RL-02`
+* **中欄（手寫草簽名）**：主題核心思想家或哲學隱喻的流暢鋼筆草寫（`Caveat` 字體）：
+  - ABM：`Complexitas Emergente scripsit` (複雜湧現者書)
+  - RL：`Bellman & Machina scripsit` (貝爾曼與發條機關書)
+* **右欄（紀年與規格）**：`Anno Domini 2026 · Typographia A4`
+
 ---
 
 ## 2. 跨類型作品生成指南 (Posters, Illustrations & Cards)
